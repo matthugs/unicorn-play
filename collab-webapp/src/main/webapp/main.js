@@ -10,7 +10,7 @@ var cowebConfig = {
 };
 
 require({moduleUrl : 'lib'},
-        ['coweb/main','dojo'],
+        ['coweb/main','dojo', "collab-webapp/colist"],
 function(coweb, dojo) {
     // do application setup here
     

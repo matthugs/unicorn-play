@@ -29,7 +29,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>7.3.0.v20110203</version>
                 <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <scanIntervalSeconds>2</scanIntervalSeconds>
                     <webAppConfig>
                         <contextPath>/collab-webapp</contextPath>
                     </webAppConfig>
@@ -51,6 +51,16 @@
                             </excludes>
                             <targetPath>lib</targetPath>
                         </overlay>
+                        <overlay>
+                            <groupId>org.opencoweb.cowebx</groupId>
+                            <artifactId>cowebx-widgets-dojo</artifactId>
+                            <type>war</type>
+                            <excludes>
+                                <exclude>META-INF/**</exclude>
+                                <exclude>WEB-INF/**</exclude>
+                            </excludes>
+                            <targetPath>lib/cowebx/dojo</targetPath>
+                        </overlay>
                     </overlays>
                 </configuration>
             </plugin>
@@ -71,6 +81,12 @@
         <dependency>
             <groupId>org.opencoweb</groupId>
             <artifactId>coweb-javascript</artifactId>
+            <version>${coweb-version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.opencoweb.cowebx</groupId>
+            <artifactId>cowebx-widgets-dojo</artifactId>
             <version>${coweb-version}</version>
             <type>war</type>
         </dependency>
