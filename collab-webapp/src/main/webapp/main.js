@@ -16,7 +16,5 @@ function(coweb, dojo) {
     
     dojo.ready(function() {
         // on page load, prepare, join, and update in a session
-        var sess = coweb.initSession();
-        sess.prepare();
     });
 });
