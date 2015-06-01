@@ -25,7 +25,7 @@ define(
         //the DOM object
         this.grid.canSort = function() {return false;};
         this.dataStore = null;
-        this.dsHandles = {};
+        this.dataStoreHandles = {};
 
         this.initCollab();
 
@@ -42,15 +42,36 @@ define(
 
         //Session management stuff
         var session = coweb.initSession();
-        session.onStatusChange(function(stat) {
+        session.onStatusChange = function(stat) {
           console.log(stat);
-        });
+        };
         //BusyDialog.createBusy(session);
         session.prepare();
       };
+
+      // "static" variable (or at least that's why we assign it this way)
+      ColistApp.typeToFuncMapping = {
+        "update": {ds : "onSet", coop: "onLocalUpdate"},
+        "insert": {ds : "onNew", coop: "onLocalInsert"},
+        "delete": {ds : "onDelete", coop: "onLocalDelete"}
+      };
+      console.log(ColistApp.typeToFuncMapping);
+
+      this._connectToDataStore = function(type) {
+        var funcs = ColistApp.typeToFuncMapping[type];
+        var handle = dojo.connect(this.dataStore, funcs.ds, funcs.coop);
+      };
+
       proto.initCollab = function() {
         console.log("initCollab called!");
-        //temporary stub
+        this.collab = coweb.initCollab({id:"nonsense"});
+        this.collab.subscribeSync("listChange", this, "onRemoteChange");
+        // now when a remote change with topic "lsitChange" is received, 
+        // the method called "onRemoteChange will be invoked on this object
+      };
+
+      proto.onRemoteChange = function(args) {
+        //temporarily stubbed
       };
 
       proto.buildList = function() {
@@ -65,6 +86,7 @@ define(
         console.log(this.grid);
         this.grid.setStore(store);
       };
+
 
       proto.onAddRow = function() {
         var date = new Date();
@@ -92,6 +114,5 @@ define(
       dojo.ready(function() {
         app.init();
       });
-
     }
 );
