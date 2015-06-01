@@ -1,0 +1,21 @@
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/resources/dojo.css";
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dijit/themes/claro/claro.css";
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojox/grid/resources/Grid.css";
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojox/grid/resources/claroGrid.css";
+html, body {
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+#controls {
+    margin: 10px;
+    text-align: center;
+}
