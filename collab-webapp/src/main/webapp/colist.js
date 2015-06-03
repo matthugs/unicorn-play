@@ -49,17 +49,69 @@ define(
         session.prepare();
       };
 
+
+      /*
+       * begin code for hooking up dojo's DataStore object to methods
+       * which send along the data to opencoweb 
+       */
+
       // "static" variable (or at least that's why we assign it this way)
       ColistApp.typeToFuncMapping = {
         "update": {ds : "onSet", coop: "onLocalUpdate"},
         "insert": {ds : "onNew", coop: "onLocalInsert"},
         "delete": {ds : "onDelete", coop: "onLocalDelete"}
       };
-      console.log(ColistApp.typeToFuncMapping);
-
-      this._connectToDataStore = function(type) {
+      console.log();
+      proto._connectToDataStore = function(type) {
         var funcs = ColistApp.typeToFuncMapping[type];
-        var handle = dojo.connect(this.dataStore, funcs.ds, funcs.coop);
+        var handle = dojo.connect(this.dataStore, funcs.ds, this, funcs.coop);
+        // the handle must be stored to allow us to disconnect later
+        this.dataStoreHandles[type] = handle;
+      };
+      proto._disconnectFromDataStore = function(type) {
+        // do nothing if there is no handle stored in our handle map
+        if(!this.dataStoreHandles[type]) return;
+        dojo.disconnect(this.dataStoreHandles[type]);
+        this.dataStoreHandles[type] = null;
+      };
+      proto._connectAllToDataStore = function() {
+        arrays.forEach(Object.keys(ColistApp.typeToFuncMapping),
+            function(type) {
+              this._connectToDataStore(type);
+            }, this);
+      };
+      proto._disconnectAllFromDataStore = function() {
+        arrays.forEach(Object.keys(ColistApp.typeToFuncMapping),
+            function(type) {
+              this._disconnectFromDataStore(type);
+            }, this);
+      };
+      /*
+       * end code for hooking up dojo's DataStore object to coweb
+       */
+      proto._serializeItem = function(item) {
+        var plainOldJSONObject = {};
+        arrays.forEach(this.dataStore.getAttributes(item), function(attr) {
+          plainOldJSONObject[attr] = this.dataStore.getValue(item, attr);
+        }, this); // tells forEach to bind "this" to the CollabApp object,
+        // rather than what we're iterating over
+        return plainOldJSONObject;
+      };
+      proto.onLocalInsert = function(item, parentInfoWhichWeDontNeed) {
+        var newlyInsertedRow = this._serializeItem(item);
+        var valueToPassAlong = {row: newlyInsertedRow};
+
+        var position = this.grid.getItemIndex(item);
+        this.localListData.splice(position, 0, newlyInsertedRow);
+        this.collab.sendSync("listChange", valueToPassAlong, "insert",
+            position);
+        console.log("onLocalInsert called! added at postion " + position);
+      };
+      proto.onLocalUpdate = function(item, parentInfoWhichWeDontNeed) {
+        //temp stub
+      };
+      proto.onLocalDelete = function(item, parentInfoWhichWeDontNeed) {
+        //temp stub
       };
 
       proto.initCollab = function() {
@@ -72,19 +124,20 @@ define(
 
       proto.onRemoteChange = function(args) {
         //temporarily stubbed
+        console.log("remote change detected!");
       };
 
       proto.buildList = function() {
         console.log("buildList called!");
         var emptyData = {data:{identifier:"id", label:"name", items:[]}};
         var store = new ItemFileWriteStore(emptyData);
-        arrays.forEach(this.bgData, function(at) {
+        arrays.forEach(this.localListData, function(at) {
           store.newItem(at);
         });
 
         this.dataStore = store;
-        console.log(this.grid);
         this.grid.setStore(store);
+        this._connectAllToDataStore();
       };
 
 
