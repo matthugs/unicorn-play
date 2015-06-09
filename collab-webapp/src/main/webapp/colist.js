@@ -46,7 +46,8 @@ define(
           console.log(stat);
         };
         //BusyDialog.createBusy(session);
-        session.prepare();
+        var argumentations = {key: "the-onlu-session"};
+        session.prepare(argumentations);
       };
 
 
