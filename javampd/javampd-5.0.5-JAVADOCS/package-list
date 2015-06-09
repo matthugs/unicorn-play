@@ -1,0 +1,7 @@
+org.bff.javampd
+org.bff.javampd.events
+org.bff.javampd.exception
+org.bff.javampd.monitor
+org.bff.javampd.objects
+org.bff.javampd.processor
+org.bff.javampd.properties
