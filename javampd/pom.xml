@@ -46,7 +46,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>hello.HelloWorld</mainClass>
+                    <mainClass>hello.RemoteControl</mainClass>
                 </configuration>
 
 
