@@ -1,3 +1,4 @@
 collab-webapp/target
 *.swp
 javampd/target
+*/target/

@@ -28,7 +28,7 @@ public class RemoteControl {
                     boomBox.stop();
                 }
                 else {
-                    System.out.println("try again dipshit");
+                    System.out.println("try again");
                 }
             }
             catch(Exception e) {

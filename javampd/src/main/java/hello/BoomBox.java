@@ -3,6 +3,8 @@ package hello;
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BoomBox{
 	
@@ -38,6 +40,7 @@ public class BoomBox{
 	private Database database;
 	private Admin admin;
 	private Playlist playlist;
+	private Timer timer;
 
 	public BoomBox(int portNumber) {
 		try {
@@ -52,14 +55,47 @@ public class BoomBox{
 			admin = mpd.getAdmin();
 	        playlist = mpd.getPlaylist();
 
+	        //Make sure MPD scans the appropriate folders and has all available tracks
+	        //in its database
 	        admin.updateDatabase();
 
+	        //setup the elapsed time timer
+			timer = new Timer();
+			timer.schedule(new TickTask(), 0, 1000);
+
+
+			//This should change. it's just for easy testing now:
 	        addAllSongsToPlaylist();
         }
         catch (Exception e) {
         	e.printStackTrace();
         }
         
+	}
+
+
+	class TickTask extends TimerTask {
+		long lastTime = 0;
+		long thisTime = 0;
+
+		public void run() {
+			System.out.println("the run method got called");
+			try{
+				System.out.println("inside the try block");
+				thisTime = player.getElapsedTime();
+
+				if(thisTime != lastTime){
+					lastTime = thisTime;
+					System.out.println(thisTime+" / "+player.getTotalTime());
+				}
+				else {
+					System.out.println("do I have a logical error?? Look:" + thisTime);
+				}
+			}
+			catch (Exception e) {
+				System.out.println("it didn't work");
+			}
+		}
 	}
 
 	// playerChanged(PlayerChangeEvent event) {
@@ -89,6 +125,10 @@ public class BoomBox{
 		playlist.addSong(song);
 	}
 
+	public void pause() throws Exception {
+		player.pause();
+	}
+
 	public void play() throws Exception{
 		player.play();
 	}
@@ -101,4 +141,14 @@ public class BoomBox{
 	public void stop() throws Exception{
 		player.stop();
 	}
+
+	public void next() throws Exception{
+		player.playNext();
+	}
+
+	public void previous() throws Exception{
+		player.playPrev();
+	}
+
+
 }
