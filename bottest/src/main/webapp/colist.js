@@ -53,7 +53,7 @@ define(
 
   proto.onBot = function() {
     console.log("here1");
-    this.collab.postService("player",{}, console.log("Success"),console.log("Fail"));
+    this.collab.postService("player",{player:"play"}, function() {console.log("Success")}, function(){console.log("Fail")});
   }
 
 
