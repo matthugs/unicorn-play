@@ -8,7 +8,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <coweb-version>0.8.3.1</coweb-version>
+        <coweb-version>1.0</coweb-version>
     </properties>
 
     <build>

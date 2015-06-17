@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 import org.coweb.bots.VanillaBot;
 import org.coweb.bots.Proxy; //Used to send messages back to the session - don't need this right now
+import java.util.Map;
+import java.util.HashMap;
 import java.io.*;
 
 public class SoundPlayBot extends VanillaBot {
@@ -20,14 +22,21 @@ public class SoundPlayBot extends VanillaBot {
 	
     @Override
 	public void onShutdown() {
-    	if(boomBox != null){
-    		boomBox.stop();
+    	try{
+	    	if(boomBox != null){
+	    		boomBox.stop();
+	    	}
     	}
+        catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("Abject failure!");
+        }
     	boomBox = null;
 	}
 
     @Override
 	public void init() {
+    	System.out.println("Initialized (Not necessarily properly)!");
     	this.boomBox = new BoomBox(6001); //note: ACTUALLY GET A BOOMBOX FROM SOMEWHERE.
 	}//may be good enough for this; pretty much just means 'given a working boombox'.
 	
@@ -39,16 +48,21 @@ public class SoundPlayBot extends VanillaBot {
 		//get the relevant info from params
 		String req = (String)params.get("player");//obviously need to figure out exactly what I'm getting.
 		//this is defined by Ting so this is sufficient for now.
-        if(req.equals("play") ){
-            boomBox.play();
+		try{
+	        if(req.equals("play") ){
+	            boomBox.play();
+	        }
+	        else if(req.equals("stop")) {
+	            boomBox.stop();
+	        }
+	        else if(req.equals("pause")) {
+	            boomBox.stop();
+	        }
+		}
+        catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("Abject failure!");
         }
-        else if(req.equals("stop")) {
-            boomBox.stop();
-        }
-        else if(req.equals("pause")) {
-            boomBox.stop();
-        }
-        
         //seems like standard issue for an answer. Not gonna touch this (though I could).
         Map<String, Object> reply = new HashMap<String, Object>();
         reply.put("reply", "acknowledged");
