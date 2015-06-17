@@ -37,7 +37,8 @@ define(
         this.removed = {};
         var addButton = dijit.byId("addButton");
         var removeButton = dijit.byId("remButton");
-        dojo.connect(addButton, "onClick", this, "onAddRow");
+        //dojo.connect(addButton, "onClick", this, "onAddRow");
+        dojo.connect(addButton, "onClick", this, "onBot");
         dojo.connect(removeButton, "onClick", this, "onRemoveRow");
 
         //Session management stuff
@@ -49,6 +50,13 @@ define(
         var argumentations = {key: "the-onlu-session"};
         session.prepare(argumentations);
       };
+
+  proto.onBot = function() {
+    console.log("here1");
+    this.collab.postService("player",{}, console.log("Success"),console.log("Fail"));
+  }
+
+
 
 
       /*
@@ -122,6 +130,8 @@ define(
         // now when a remote change with topic "lsitChange" is received, 
         // the method called "onRemoteChange will be invoked on this object
       };
+
+
 
       proto.onRemoteChange = function(args) {
         //temporarily stubbed
