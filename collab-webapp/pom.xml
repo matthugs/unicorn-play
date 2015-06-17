@@ -8,7 +8,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <coweb-version>0.8.3.1</coweb-version>
+        <coweb-version>1.0</coweb-version>
     </properties>
 
     <build>
@@ -89,6 +89,11 @@
             <artifactId>cowebx-widgets-dojo</artifactId>
             <version>${coweb-version}</version>
             <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>net.thejavashop</groupId>
+            <artifactId>javampd</artifactId>
+            <version>5.0.3</version>
         </dependency>
     </dependencies>
 </project>

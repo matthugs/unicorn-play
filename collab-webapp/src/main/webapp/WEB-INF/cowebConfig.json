@@ -1,8 +1,14 @@
 {
-	/**
-	  * See `http://opencoweb.org/ocwdocs/java/deploy.html#configuring-coweb-options` for documentation on
-	  * OCW cowebConfig.json configuration.
-	  */
-	"moderatorIsUpdater": false,
-	"bots": [{"service":"player"}]
+    "moderatorIsUpdater": false,
+    "bots": [
+            {
+                "name": "Sound Play Bot",
+                "description": "Does a thing and plays the musics",
+                "author": "William Baldwin",
+                "version": "1.0",
+                "service": "player",
+                "class": "hello.SoundPlayBot"
+            }
+
+    ]
 } 
