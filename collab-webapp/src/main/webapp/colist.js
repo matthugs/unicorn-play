@@ -87,6 +87,23 @@ define(
               this._disconnectFromDataStore(type);
             }, this);
       };
+       proto._dsConnect = function(connect, type) {
+       if (connect) {
+       // get info about the data store and local functions
+       var funcs = ColistApp.typeToFuncMapping[type];
+       // do the connect
+       var h = dojo.connect(this.dataStore, funcs.ds, this, funcs.coop);
+       // store the connect handle so we can disconnect later
+       this.dataStoreHandles[type] = h;
+       } else {
+       if (!this.dataStoreHandles[type])
+       return;
+       // disconnect using the previously stored handle
+       dojo.disconnect(this.dataStoreHandles[type]);
+       // delete the handle
+       this.dataStoreHandles[type] = null;
+       }
+       };
       /*
        * end code for hooking up dojo's DataStore object to coweb
        */
@@ -101,7 +118,6 @@ define(
       proto.onLocalInsert = function(item, parentInfoWhichWeDontNeed) {
         var newlyInsertedRow = this._serializeItem(item);
         var valueToPassAlong = {row: newlyInsertedRow};
-
         var position = this.grid.getItemIndex(item);
         this.localListData.splice(position, 0, newlyInsertedRow);
         this.collab.sendSync("listChange", valueToPassAlong, "insert",
@@ -111,8 +127,20 @@ define(
       proto.onLocalUpdate = function(item, parentInfoWhichWeDontNeed) {
         //temp stub
       };
-      proto.onLocalDelete = function(item, parentInfoWhichWeDontNeed) {
-        //temp stub
+      proto.onLocalDelete = function(item) {
+       // get all attribute values
+       // name includes row id for conflict resolution
+       var id = this.dataStore.getIdentity(item);
+       var pos = this.removed[id];
+       delete this.removed[id];
+       this.localListData.splice(pos, 1);
+       // Update this.removed data structure in case any positions need to be re-aligned.
+       for (var k in this.removed) {
+       if (this.removed[k] > pos)
+       --this.removed[k];
+       }
+       this.collab.sendSync("listChange", null, "delete", pos);
+       console.log("onLocalRemove called! remove at postion " + pos);
       };
 
       proto.initCollab = function() {
@@ -125,9 +153,46 @@ define(
 
       proto.onRemoteChange = function(args) {
         //temporarily stubbed
-        console.log("remote change detected!");
+        console.log("remote change detected!!!!!");
+       var value = args.value;
+       if (args.type === "insert") {
+       console.log("remote change detected! -- insert type");
+       this.onRemoteInsert(value, args.position);
+       } else if (args.type === "update") {
+              console.log("remote change detected! -- update type");
+       //this.onRemoteUpdate(value, args.position);
+       } else if (args.type === "delete") {
+              console.log("remote change detected! -- delete type");
+       this.onRemoteDelete(args.position);
+       }
       };
 
+       proto.onRemoteInsert = function(value, position) {
+       // This is the unfortunate case we must rebuild the data grid (since I can't insert at arbitrary position...).
+       console.log("On remote insert called!!");
+       this.localListData.splice(position,0,value.row);
+       this.buildList();
+       };
+       
+       /**
+        * Called when an item disappears from a remote data store. Removes the
+        * item with the same id from the local data store.
+        *
+        * @param position Which item to delete.
+        */
+       proto.onRemoteDelete = function(position) {
+              var item = this.grid.getItem(position);
+       this._dsConnect(false, "delete");
+       
+       this.localListData.splice(position, 1);
+       this.dataStore.deleteItem(item);
+       
+       this._dsConnect(true, "delete");
+       console.log("On remote delete called!!");
+
+       };
+       
+       
       proto.buildList = function() {
         console.log("buildList called!");
         var emptyData = {data:{identifier:"id", label:"name", items:[]}};
@@ -139,6 +204,7 @@ define(
         this.dataStore = store;
         this.grid.setStore(store);
         this._connectAllToDataStore();
+
       };
 
 
@@ -153,6 +219,7 @@ define(
         this.dataStore.newItem(toBeAdded);
         console.log("onAddRow called! added: " + toBeAdded.id);
       };
+       
 
       proto.onRemoveRow = function() {
         console.log("onRemoveRow called!");
