@@ -46,15 +46,11 @@ public class SoundPlayBot extends VanillaBot {
 	 */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
 		//get the relevant info from params
-		//String hash = (String)params.get("player");//obviously need to figure out exactly what I'm getting.
+		String hash = (String)params.get("player");//obviously need to figure out exactly what I'm getting.
 		//this is defined by Ting so this is sufficient for now.
 
-		String req = (String)params.get("player");
 		try{
-	        //boomBox.playFromHash(hash);
-	        if(req.equals("play") ){
-	            boomBox.play();
-	        }
+	        boomBox.playFromHash(hash);
 		}
         catch(Exception e) {
             e.printStackTrace();
