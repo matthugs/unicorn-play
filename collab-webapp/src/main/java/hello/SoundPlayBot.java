@@ -10,7 +10,7 @@ import java.io.*;
 
 public class SoundPlayBot extends VanillaBot {
 	private Proxy proxy = null;
-	BoomBox boomBox = null;
+	MPDBox boomBox = null;
 	
 	/*
 	 * They say this is necessary for all bots
@@ -46,18 +46,10 @@ public class SoundPlayBot extends VanillaBot {
 	 */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
 		//get the relevant info from params
-		String req = (String)params.get("player");//obviously need to figure out exactly what I'm getting.
+		String hash = (String)params.get("player");//obviously need to figure out exactly what I'm getting.
 		//this is defined by Ting so this is sufficient for now.
 		try{
-	        if(req.equals("play") ){
-	            boomBox.play();
-	        }
-	        else if(req.equals("stop")) {
-	            boomBox.stop();
-	        }
-	        else if(req.equals("pause")) {
-	            boomBox.stop();
-	        }
+	        boomBox.playFromHash(hash);
 		}
         catch(Exception e) {
             e.printStackTrace();

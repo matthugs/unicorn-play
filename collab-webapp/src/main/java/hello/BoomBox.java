@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BoomBox{
+public class BoomBox implements MPDBox{
 	
 // PLAYER_MUTED 
 // PLAYER_NEXT 
