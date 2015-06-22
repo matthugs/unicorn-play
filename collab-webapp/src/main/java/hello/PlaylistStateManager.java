@@ -4,8 +4,16 @@ public class PlaylistStateManager implements Playlist extends ArrayList {
 		return true;
 	}
 
-	public boolean removeTrack(PlaylistItem song){
+	public boolean addTrack(PlaylistItem item, int position) {
+		
+	}
+
+	public boolean removeTrack(PlaylistItem song) {
 		return true;
+	}
+
+	public boolean removeTrack(int position) {
+
 	}
 	
 	//If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.
@@ -30,6 +38,10 @@ public class PlaylistStateManager implements Playlist extends ArrayList {
 
 	//remove the song that just finished playing
 	protected boolean popTop(){
+		return true;
+	}
+
+	protected boolean updateTheMPDPlaylist(){
 		return true;
 	}
 }
