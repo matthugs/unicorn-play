@@ -1,5 +1,5 @@
-public class CollabPlaylist implements Playlist extends ArrayList {
-	private Arraylist<MPDSong> playlist;
+public class PlaylistStateManager implements Playlist extends ArrayList {
+	//this extends Arraylist<PlaylistItems>
 	public void addTrack(MPDSong song){
 
 	}
