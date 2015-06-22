@@ -8,4 +8,6 @@ public interface Query {
 	public List<String> searchGenre(String genre);
 	public List<String> searchAlbum(String album);
 	public List<String> searchSong(String song);
+	protected String hash(MPDSong song);
+	public MPDSong getSong(String hash);
 };

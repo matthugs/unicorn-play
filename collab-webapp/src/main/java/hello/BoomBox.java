@@ -8,41 +8,19 @@ import java.util.TimerTask;
 
 public class BoomBox implements MPDBox{
 	
-// PLAYER_MUTED 
-// PLAYER_NEXT 
-// PLAYER_PAUSED 
-// PLAYER_PREVIOUS 
-// PLAYER_SEEKING 
-// PLAYER_SONG_SET 
-// PLAYER_STARTED 
-// PLAYER_STOPPED 
-// PLAYER_UNMUTED 
-// PLAYER_UNPAUSED 
-
-// ALBUM_ADDED 
-// ARTIST_ADDED 
-// FILE_ADDED 
-// GENRE_ADDED 
-// MULTIPLE_SONGS_ADDED 
-// PLAYLIST_ADDED 
-// PLAYLIST_CHANGED 
-// PLAYLIST_CLEARED 
-// PLAYLIST_DELETED 
-// PLAYLIST_LOADED 
-// PLAYLIST_SAVED 
-// SONG_ADDED 
-// SONG_DELETED 
-// SONG_SELECTED 
-// YEAR_ADDED 
-
 	private MPD mpd = null;
 	private Player player;
 	private Database database;
 	private Admin admin;
-	private Playlist playlist;
+	private Playlist mpdPlaylist;
 	private Timer timer;
+	private ICollabPlaylist playlist;
+	private Query query;
 
 	public BoomBox(int portNumber) {
+		query = new MPDQuery();
+		playlist = new CollabPlaylist();
+
 		try {
             mpd = new MPD.Builder()
                         .port(portNumber)
@@ -53,7 +31,7 @@ public class BoomBox implements MPDBox{
 	        player = mpd.getPlayer();
 	        database = mpd.getDatabase();
 			admin = mpd.getAdmin();
-	        playlist = mpd.getPlaylist();
+	        mpdPlaylist = mpd.getPlaylist();
 
 	        //Make sure MPD scans the appropriate folders and has all available tracks
 	        //in its database
@@ -118,11 +96,11 @@ public class BoomBox implements MPDBox{
 	// }
 
 	public void addAllSongsToPlaylist() throws Exception{
-		playlist.addSongs((List)database.listAllSongs());
+		mpdPlaylist.addSongs((List)database.listAllSongs());
 	}
 
 	public void addSongToPlaylist(MPDSong song) throws Exception{
-		playlist.addSong(song);
+		mpdPlaylist.addSong(song);
 	}
 
 	public void pause() throws Exception {
@@ -134,7 +112,7 @@ public class BoomBox implements MPDBox{
 	}
 
 	public void playSong(MPDSong song) throws Exception{
-		playlist.addSong(song);
+		mpdPlaylist.addSong(song);
 		player.play();
 	}
 
@@ -150,5 +128,9 @@ public class BoomBox implements MPDBox{
 		player.playPrev();
 	}
 
-
+	public void playFromHash(String hash) throws Exception{
+		MPDSong song = query.getSong(hash);
+		mpdPlaylist.clear();
+		playSong(song);
+	}
 }
