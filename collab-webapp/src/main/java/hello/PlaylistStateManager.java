@@ -3,7 +3,7 @@ package hello;
 import java.util.ArrayList;
 
 public class PlaylistStateManager {
-	ArrayList<PlaylistItem> playlist;
+	public ArrayList<PlaylistItem> playlist;
 	public PlaylistStateManager(){
 		playlist = new ArrayList<PlaylistItem>();
 	}
