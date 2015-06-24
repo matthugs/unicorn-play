@@ -1,11 +1,15 @@
-public class PlaylistStateManager implements Playlist extends ArrayList {
+package hello;
+
+import java.util.ArrayList;
+
+public class PlaylistStateManager extends ArrayList<PlaylistItem> {
 	//this extends Arraylist<PlaylistItems>
 	public boolean addTrack(PlaylistItem song){
 		return true;
 	}
 
 	public boolean addTrack(PlaylistItem item, int position) {
-		
+		return true;
 	}
 
 	public boolean removeTrack(PlaylistItem song) {
@@ -13,7 +17,7 @@ public class PlaylistStateManager implements Playlist extends ArrayList {
 	}
 
 	public boolean removeTrack(int position) {
-
+		return true;
 	}
 	
 	//If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.
