@@ -2,7 +2,14 @@ package hello;
 
 import java.util.ArrayList;
 
-public class PlaylistStateManager extends ArrayList<PlaylistItem> {
+public class PlaylistStateManager {
+
+	public Arraylist<PlaylistItem> playlist;
+
+	public PlaylistStateManager(){
+		playlist = new Arraylist<PlaylistItem>();
+	}
+
 	//this extends Arraylist<PlaylistItems>
 	public boolean addTrack(PlaylistItem song){
 		return true;
