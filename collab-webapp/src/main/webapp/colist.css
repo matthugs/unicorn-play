@@ -1,6 +1,6 @@
 @import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/resources/dojo.css";
 @import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dijit/themes/claro/claro.css";
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojox/grid/resources/Grid.css";
+
 @import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojox/grid/resources/claroGrid.css";
 html, body {
     margin: 0px;
@@ -18,4 +18,69 @@ html, body {
 #controls {
     margin: 10px;
     text-align: center;
+}
+
+#playlist {
+
+display: none;
+	width: 100%;
+    height: 100%;
+}
+
+
+#lib{
+
+    width: 100%;
+    height: 100%;
+    
+}
+
+
+table{
+border-collapse:collapse;
+border:1px solid black;
+}
+
+table td{
+border:1px solid black;
+}
+
+#libList{
+width: 100%;
+
+    border-collapse:collapse;
+border:1px solid black;
+}
+
+
+#songInLib{
+
+
+}
+
+#grid {
+
+    height:600px;
+}
+
+#lib{
+display: block;
+width: 100%;
+    height: 100%;
+
+}
+
+
+.header {
+    border:none;
+}
+
+img {
+    border:none;
+}
+#switchPage {
+    background: url("plusSign.png");
+    background-size: cover;
+    height: 100px;
+    width:100px;
 }
