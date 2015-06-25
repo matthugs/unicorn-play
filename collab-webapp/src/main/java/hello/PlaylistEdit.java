@@ -5,6 +5,7 @@ import java.util.Map;
 public class PlaylistEdit extends JSONWrapper {
 	//The primary difference from playlist item will be the desired features.
 	//To be valid, this requires the type, location, and at least hashID of the edit.
+	private boolean valid;
 	private String topic;
 	private String type;
 	private Integer site;
@@ -13,42 +14,47 @@ public class PlaylistEdit extends JSONWrapper {
 	private Integer position;
 	public PlaylistEdit(Map<String, Object> map) {
 		super(map);
+		valid = true;
 		try{
 			topic = (String)map.get("topic");
 		} catch (Exception ClassCastException){
 			topic = null;
+			valid = false;
 		}
 		try{
 			type = (String)map.get("type");
 		} catch (Exception ClassCastException){
 			type = null;
+			valid = false;
 		}
 		try{
 			site = (Integer) map.get("site");
 		} catch (Exception ClassCastException){
 			site = null;
+			valid = false;
 		}
 		try{
 			value = new PlaylistItem((Map<String, Object>) map.get("value"));
 		} catch (Exception ClassCastException){
 			value = null;
+			valid = false;
 		}
 		try{
 			position = (Integer) map.get("position");
 		} catch (Exception ClassCastException){
 			position = null;
+			valid = false;
+		}
+		if(!value.isValid()){
+			valid = false;
+		}
+		if(!(type.equals("insert") || type.equals("delete") || type.equals("update") || type.equals("null"))){
+			valid = false;
 		}
 	}
 
 	public boolean isValid(){
-		if (topic != null && type != null && site != null && value != null && position != null){
-			//if ALL of that is valid...
-			if(type.equals("insert") || type.equals("delete") || type.equals("update") || type.equals("null")){
-				return value.isValid();
-				//it's a properly formatted edit.
-			}
-		}
-		return false;
+		return valid;
 	}
 
 	@Override
