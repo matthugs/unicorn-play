@@ -3,28 +3,26 @@ package hello;
 import java.util.ArrayList;
 
 public class PlaylistStateManager {
-
-	public Arraylist<PlaylistItem> playlist;
-
+	public ArrayList<PlaylistItem> playlist;
 	public PlaylistStateManager(){
-		playlist = new Arraylist<PlaylistItem>();
+		playlist = new ArrayList<PlaylistItem>();
 	}
-
-	//this extends Arraylist<PlaylistItems>
+	//This should specify if it needs to add to the start or end, but right now it adds to the end.
 	public boolean addTrack(PlaylistItem song){
-		return true;
+		return playlist.add(song);
 	}
 
 	public boolean addTrack(PlaylistItem item, int position) {
-		return true;
+		playlist.add(position, item);
+		return (playlist.get(position).equals(item));
 	}
 
 	public boolean removeTrack(PlaylistItem song) {
-		return true;
+		return playlist.remove(song);
 	}
 
 	public boolean removeTrack(int position) {
-		return true;
+		return playlist.remove(position) != null;
 	}
 	
 	//If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.

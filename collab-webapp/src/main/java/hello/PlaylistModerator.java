@@ -31,18 +31,16 @@ public class PlaylistModerator extends DefaultSessionModerator {
     public void onSync(String clientId, Map<String, Object> data) {
     	PlaylistEdit edit = new PlaylistEdit(data);
     	if (edit.isValid()){
-    		//it is possible for it to be valid but have type be null (I need to check WHY, though).
-    		if(edit.getType() != null){
-    			if(edit.getType().equals("insert")){
-    				
-    			}
-    			else if(edit.getType().equals("delete")){
-    				
-    			}
-    			else if(edit.getType().equals("update")){
-    				
-    			}
-    		}
+			if(edit.getType().equals("insert")){
+				manager.addTrack(edit.getValue(), edit.getPosition());
+			}
+			else if(edit.getType().equals("delete")){
+				manager.removeTrack(edit.getPosition());
+			}
+			else if(edit.getType().equals("update")){
+				//I don't know if this is actually relevant, same for null
+				//It may be relevant for voting (alters the list value in a way that isn't removal)
+			}
     	}
     }
 }
