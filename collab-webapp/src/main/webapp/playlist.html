@@ -1,0 +1,15 @@
+<!--by song #/libBySong-->
+
+ <div id="lib">
+    <table id="libList">
+      <tr>
+        <th >Song</th>
+        <th >Singer</th>
+      </tr>
+      <tr ng-repeat="song in playlist">
+        <td class="songInLib">{{song.song}}</td>
+        <td>{{song.singer}} <button class="deleteButton">Delete</button></td>
+      </tr>
+    </table>
+  </div>
+
