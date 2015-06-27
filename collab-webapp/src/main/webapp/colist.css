@@ -12,6 +12,26 @@ a {
     font-size: 2em;
 }
 
+
+.searchBoxContainer {
+    display: block;
+    height:5%;
+    width: 100%;
+    padding:5%;
+}
+
+
+.searchBox{
+    display: block;
+    height:100%;
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    padding: 5px;
+    font-size: 1em;
+}
+
+
 .navButton {
 
     background: none;
@@ -119,8 +139,12 @@ width: 100%;
     padding-top: 5%;
 }
 
-.header {
+header {
     border:none;
+    height:3em;
+    margin: auto;
+    display: block;
+    position: relative;;
 }
 
 img {

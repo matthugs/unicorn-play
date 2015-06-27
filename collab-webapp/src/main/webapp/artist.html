@@ -1,12 +1,15 @@
- <div id="lib">
-    <table id="libList" ng-controller="playlistCtr">
-      <tr>
-        <th >Song</th>
-        <th >Singer</th>
-      </tr>
-      <tr ng-repeat="song in lib">
-        <td class="songInLib">{{song.song}}</td>
-        <td>{{song.singer}}</td>
-      </tr>
-    </table>
+ <div class="lib">
+  <div class = "searchBoxContainer">
+    <input type="text" class = "searchBox" ng-model="searchArtistText" ng-change="searchArtist()"/>
   </div>
+  <table class="libList" ng-controller="playlistCtr">
+    <tr>
+      <th >Song</th>
+      <th >Singer</th>
+    </tr>
+    <tr ng-repeat="song in lib">
+      <td class="songInLib">{{song.song}}</td>
+      <td>{{song.singer}}</td>
+    </tr>
+  </table>
+</div>

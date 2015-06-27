@@ -1,3 +1,4 @@
+//handle loading data and changing data
 define(
 	[
 	"coweb/main",
@@ -7,6 +8,8 @@ define(
 	"bootstrap",
 	],
 	function(coweb,$,angular,ngRoute) {
+
+		//coweb init
 		var session = coweb.initSession();
 		session.onStatusChange = function(stat) {
 			console.log(stat);
@@ -14,49 +17,58 @@ define(
 		var argumentations = {key: "the-onlu-session"};
 		session.prepare(argumentations);
 
+		//angular module init
 		var app = angular.module('coPlaylist', ['ngRoute']);
+
+		//playlist, SHOULD NOT BE HERE FINALLY
 		var playlist = [
 		{"song":"Not Enough", "singer":"Avril Lavigne"},
 		{"song":"Criminal", "singer":"Britney Spear"},
 		{"song":"Broke hearted", "singer":"Karmin"}
 		];
 
+		//library, SHOULD NOT BE HERE FINALLY
 		var lib=[
 		{"song":"Sugar", "singer":"Maroon5"},
 		{"song":"My Bloody Valentine", "singer":"Tata Young"},
 		{"song":"Animal", "singer":"Maron5"},
 		{"song":"One More Night", "singer":"Maroon5"}
-
 		];
 
+		//ngRoute init
 		app.config( function ( $routeProvider ) {
 			$routeProvider
 			.when( '/playlist', { templateUrl: 'playlist.html', controller: 'playlistCtr' })
-			.when( '/library', { templateUrl: 'library.html', controller: 'playlistCtr', reloadOnSearch: false  } )
-			.when( '/libBySong', { templateUrl: 'song.html', controller: 'playlistCtr', reloadOnSearch: false  } )
-			.when( '/libByAlbum', { templateUrl: 'album.html', controller: 'playlistCtr', reloadOnSearch: false  } )
-			.when( '/libByArtist', { templateUrl: 'artist.html' , controller: 'playlistCtr', reloadOnSearch: false } )
+			.when( '/library', { templateUrl: 'library.html', controller: 'libraryCtr' } )
+			.when( '/libBySong', { templateUrl: 'song.html', controller: 'libraryCtr' } )
+			.when( '/libByAlbum', { templateUrl: 'album.html', controller: 'libraryCtr' } )
+			.when( '/libByArtist', { templateUrl: 'artist.html' , controller: 'libraryCtr' } )
 			.otherwise( { redirectTo: '/playlist' } );
 		});
 
+		//ngController init
 		app.controller("playlistCtr", function($scope, $http) {
-			$http.get('lib.json').
-			success(function(data, status, headers, config) {
-				console.log("find lib json");
-				$scope.lib = lib;
-			}).
-			error(function(data, status, headers, config) {
-				console.log("loading data error, lib.json");
-			});
 
-			$http.get('playlist.json').
-			success(function(data, status, headers, config) {
-				console.log("find playlist json");
-				$scope.playlist = playlist;
-			}).
-			error(function(data, status, headers, config) {
-				console.log("loading data error, playlist.js");
-			});
+			//loading library
+			//$http.get('lib.json').
+			//success(function(data, status, headers, config) {
+				console.log("find libray");
+				$scope.lib = lib;
+		//	}).
+		//	error(function(data, status, headers, config) {
+		//		console.log("loading data error, lib.json");
+		//	});
+
+
+			//loading playlist
+		//	$http.get('playlist.json').
+		//	success(function(data, status, headers, config) {
+			console.log("find playlist");
+			$scope.playlist = playlist;
+		//	}).
+		//	error(function(data, status, headers, config) {
+		//		console.log("loading data error, playlist.js");
+		//	});
 
 
 			$scope.collab = coweb.initCollab({id:"nonsense"});
@@ -66,58 +78,48 @@ define(
 				if (playlist !== args.value) {
 					playlist = args.value;
 					$scope.playlist = playlist;
+					$scope.$apply();
 					console.log("update remotely");
-					console.log(playlist);
+					console.log($scope.playlist);
 				}
 
 			});
 
-			$scope.addSong = function(song, singer){
-				var newSong = function() {
-					this.song = song;
-					this.singer = singer;
-				};
-				playlist.push({song : song, singer : singer});
-				$scope.playlist = playlist;
-				console.log("add new song locally : " + song + " " + singer);
-				this.collab.sendSync("listChange", $scope.playlist);
-
-			};
-
-
-			$scope.$watchCollection( 'playlist',
-				function(newValue, oldValue){
+			$scope.$watchCollection( function() {return playlist},
+			function(newValue, oldValue){
+				if (typeof newValue !== 'undefined') {
+					$scope.playlist = playlist;
 					console.log('updating playlist');
-					console.log(newValue);
-					console.log(oldValue);
+					console.log($scope.playlist);
 				}
-				);
-			
-
-
-			$scope.onRemoteChange = function(args) {
-
-
-				console.log("remote change detected!!!!!");
-				var value = args.value;
-				if (args.type === "insert") {
-					console.log("remote change detected! -- insert type");
-					this.onRemoteInsert(value, args.position);
-				} else if (args.type === "delete") {
-					console.log("remote change detected! -- delete type");
-					this.onRemoteDelete(args.position);
-				}
-			};
-
-
-
-
-
-
+			}
+			);
 
 
 		});
 
+		app.controller("libraryCtr", function($scope, $http) {
+		$scope.searchArtistText = "search artist";
+		$scope.searchArtist = function() {
+			console.log("about to search artist " + $scope.searchArtistText);
+				//this.collab.postService("player",{query: $scope.searchArtistText}, function() {console.log("Success")});
+			}
 
+			$scope.collab = coweb.initCollab({id:"nonsense"});
 
+			$scope.addSong = function(song, singer){
+			//	var newSong = function() {
+			//		this.song = song;
+			//		this.singer = singer;
+			//	};
+			playlist.push({song : song, singer : singer});
+			//placeholder for send notification to Bot about the changes
+			$scope.playlist = playlist;
+			console.log("add new song locally : " + song + " " + singer);
+			this.collab.sendSync("listChange", $scope.playlist);
+		};
+
+		
+
+	});
 });

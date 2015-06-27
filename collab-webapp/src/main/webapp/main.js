@@ -1,26 +1,8 @@
-//
-// Cooperative web application template.
-//
-// Copyright (c) The Dojo Foundation 2011. All Rights Reserved.
-//
 
-// assumes admin servlet deployed with the application 
 var cowebConfig = {
     adminUrl : './admin'
 };
-
-
-/*require({moduleUrl : 'lib'},
-        ['coweb/main', "collab-webapp/playlist"],
-function(coweb) {
-    // do application setup here
-    
-  //  dojo.ready(function() {
-        // on page load, prepare, join, and update in a session
-  //  });
-});*/
-requirejs.config({
-	
+requirejs.config({	
 	paths: {
         coweb : 'lib/coweb',
         cowebx: 'lib/cowebx',
@@ -36,9 +18,7 @@ requirejs.config({
         'angular-route': {'exports': 'angular-route'},
         'bootstrap': {deps: ['jQuery']},
     },
-    priority: [
-    "angular"
-    ],
+    priority: ["angular"],
 });
 require([
     'coweb/main',
@@ -48,9 +28,6 @@ require([
     ], function(coweb,$,angular,app) {
         var $html = angular.element(document.getElementsByTagName('html')[0]);
         angular.element().ready(function() {
-            // bootstrap the app
             angular.bootstrap(document, ['coPlaylist']);
         });
     });
-
-
