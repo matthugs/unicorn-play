@@ -1,7 +1,11 @@
 package hello;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
+import org.bff.javampd.exception.*;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -11,14 +15,20 @@ import java.util.Collection;
 import java.util.Map;
 
 public class MPDQuery implements Query{
-
-	private MPDDatabase database;
+	private static final Logger logger = LogManager.getLogger();
+	private Database database;
 	private Hashtable<String, MPDSong> hashTable;
 
-	public MPDQuery(MPDDatabase database) {
+
+	public MPDQuery(Database database) {
 		this.database = database;
 		hashTable = new Hashtable<String, MPDSong>();
-		ArrayList<MPDSong> allSongList = database.listAllSongs();
+		try{
+		Collection<MPDSong> allSongList = database.listAllSongs();
+		}
+		catch (MPDDatabaseException e) {
+			Logger.error("sttuf");
+		}
 		for(MPDSong song : allSongList) {
 			hashTable.put(hash(song), song);
 		}
@@ -33,7 +43,12 @@ public class MPDQuery implements Query{
 	}
 
 	public Map<String, Object> searchGenre(String genre){
-		return songListToJSONList(database.findGenre(genre));
+		try{
+		HashMap<String, Object> ret = songListToJSONList(database.findGenre(genre));
+		}
+		catch(Exception e) {
+
+		}
 	}
 
 	public Map<String, Object> searchAlbum(String album){
@@ -44,11 +59,11 @@ public class MPDQuery implements Query{
 		return songListToJSONList(database.findTitle(song));
 	}
 
-	// private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
-	// 	//TODO: FIX ME!!!!!!
-	// 	//Should include the hash for this song: method is below.
-	// 	return "";
-	// }
+	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
+		//TODO: FIX ME!!!!!!
+		//Should include the hash for this song: method is below.
+		return new HashMap<String, Object>();
+	}
 
 	private Map<String, Object> songListToJSONList(Collection<MPDSong> songList) {
 		/*List<String> ret = new ArrayList<String>();
@@ -65,7 +80,7 @@ public class MPDQuery implements Query{
 		return ret;
 	}
 
-	protected String hash(MPDSong song){
+	public String hash(MPDSong song){
 		return (song.getArtistName() + song.getTitle());
 	}
 	
@@ -73,4 +88,7 @@ public class MPDQuery implements Query{
 		return hashTable.get(hash);
 	}
 
+	public Map<String, Object> listAll() {
+		return songListToJSONList(database.listAllSongs());
+	}
 }

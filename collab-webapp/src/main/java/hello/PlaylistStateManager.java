@@ -1,9 +1,11 @@
 package hello;
 
 import java.util.ArrayList;
+import org.bff.javampd.objects.*;
 
 public class PlaylistStateManager {
 	public ArrayList<PlaylistItem> playlist;
+	
 	public PlaylistStateManager(){
 		playlist = new ArrayList<PlaylistItem>();
 	}
@@ -55,8 +57,13 @@ public class PlaylistStateManager {
 	}
 
 	protected boolean updateCurrentlyPlaying(MPDSong song){
-		//
-		playlist.set(0, song);
+		try{
+			//FIXME to use a playlistItem and not a song
+			//playlist.set(0, song);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected PlaylistItem getNextSong() {

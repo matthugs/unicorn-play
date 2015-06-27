@@ -1,12 +1,16 @@
+package hello;
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MPDPlaylistRepresentation{
 	MPDSong current;
 	MPDSong next;
 	MPD mpd;
-	MPDPlaylist playlist;
+	Playlist playlist;
 	PlaylistStateManager playlistStateManager;
+	Timer timer;
 
 	public MPDPlaylistRepresentation(MPD mpd, PlaylistStateManager playlistStateManager) {
 		this.playlistStateManager = playlistStateManager;
@@ -27,7 +31,8 @@ public class MPDPlaylistRepresentation{
 		if(current == null) {
 			current = song;
 			try{
-				playlist.add(song);
+				//FIX THIS TO USE PLAyLIST ITEM
+				//playlist.add(song);
 				mpd.getPlayer().play();
 			}
 			catch(Exception e) {
@@ -47,7 +52,7 @@ public class MPDPlaylistRepresentation{
 					playlist.swap(song, 0);
 				}
 			}
-			catch{
+			catch(Exception e){
 				System.out.println("i really should figure out loggin");
 				ret = false;
 			}
@@ -75,12 +80,12 @@ public class MPDPlaylistRepresentation{
 		public void run() {
 			try{
 				//System.out.println("inside the try block");
-				thisTime = player.getElapsedTime();
+				thisTime = (long) player.getElapsedTime();
 
 				if(thisTime < lastTime){
 					lastTime = thisTime;
 					playlistStateManager.updateCurrentlyPlaying(mpd.getPlayer().getCurrentSong());
-					next = playlistStateManager.getNextSong();
+					//next = playlistStateManager.getNextSong();
 				}
 				else {
 					//System.out.println("do I have a logical error?? Look:" + thisTime);

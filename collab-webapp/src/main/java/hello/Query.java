@@ -2,6 +2,7 @@ package hello;
 
 import java.util.List;
 import java.util.Map;
+import org.bff.javampd.objects.*;
 
 public interface Query {
 	// all of these need to return in the form of a map containing JSON objects
@@ -12,7 +13,7 @@ public interface Query {
 	public Map<String, Object> searchGenre(String genre);
 	public Map<String, Object> searchAlbum(String album);
 	public Map<String, Object> searchSong(String song);
-	protected String hash(MPDSong song);
+	public String hash(MPDSong song);
 	public MPDSong getSong(String hash);
 	//this one is temporary but should be informative
 	public Map<String, Object> listAll();
