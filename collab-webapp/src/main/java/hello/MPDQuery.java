@@ -44,11 +44,11 @@ public class MPDQuery implements Query{
 		return songListToJSONList(database.findTitle(song));
 	}
 
-	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
-		//TODO: FIX ME!!!!!!
-		//Should include the hash for this song: method is below.
-		return "";
-	}
+	// private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
+	// 	//TODO: FIX ME!!!!!!
+	// 	//Should include the hash for this song: method is below.
+	// 	return "";
+	// }
 
 	private Map<String, Object> songListToJSONList(Collection<MPDSong> songList) {
 		/*List<String> ret = new ArrayList<String>();

@@ -53,4 +53,13 @@ public class PlaylistStateManager {
 	protected boolean updateTheMPDPlaylist(){
 		return true;
 	}
+
+	protected boolean updateCurrentlyPlaying(MPDSong song){
+		//
+		playlist.set(0, song);
+	}
+
+	protected PlaylistItem getNextSong() {
+		//TODO
+	}
 }
