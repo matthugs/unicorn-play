@@ -12,14 +12,14 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	private CollabInterface collab;
 	boolean isReady = false;
 	
-	public PlaylistModerator(){
+	protected PlaylistModerator(){
 	}
 	
 	@Override
 	public void onSessionReady() {
 		this.collab = this.initCollab("playlist");
 		this.isReady = true;
-		manager = new PlaylistStateManager();
+		manager = new PlaylistStateManager(this);
 	}
 	
     @Override
@@ -28,7 +28,7 @@ public class PlaylistModerator extends DefaultSessionModerator {
         this.isReady = false;
     }
     @Override
-    public void onSync(String clientId, Map<String, Object> data) {
+    synchronized public void onSync(String clientId, Map<String, Object> data) {
     	PlaylistEdit edit = new PlaylistEdit(data);
     	if (edit.isValid()){
 			if(edit.getType().equals("insert")){

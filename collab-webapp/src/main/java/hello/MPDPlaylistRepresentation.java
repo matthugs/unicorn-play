@@ -1,10 +1,25 @@
+package hello;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.bff.javampd.objects.MPDSong;
+
 public class MPDPlaylistRepresentation{
 	MPDSong current;
 	MPDSong next;
+	private Timer timer;
+	public PlaylistStateManager manager;//so it can call methods to tell it when the song ends
 
 	public MPDPlaylistRepresentation() {
 		timer = new Timer();
 		timer.schedule(new ChangePoller(), (current.getLength()*1000 - 4000), 500);
+	}
+	
+	public MPDPlaylistRepresentation(PlaylistStateManager manager) {
+		timer = new Timer();
+		timer.schedule(new ChangePoller(), (current.getLength()*1000 - 4000), 500);
+		this.manager = manager;
 	}
 
 	class ChangePoller extends TimerTask {
@@ -29,7 +44,7 @@ public class MPDPlaylistRepresentation{
 			}
 		}
 	}
-
+	
 	private void timerUpdate(int milliseconds) {
 		timer.cancel();
 		//timer.purge();

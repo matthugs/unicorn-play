@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 public class PlaylistStateManager {
 	public ArrayList<PlaylistItem> playlist;
-	public PlaylistStateManager(){
+	private PlaylistModerator par;//so it can tell the moderator if there's a change from the MPD end
+	private MPDPlaylistRepresentation rep;
+	public PlaylistStateManager(PlaylistModerator ins){
 		playlist = new ArrayList<PlaylistItem>();
+		par = ins;
+		rep = new MPDPlaylistRepresentation(this);
 	}
 	//This should specify if it needs to add to the start or end, but right now it adds to the end.
 	public boolean addTrack(PlaylistItem song){
@@ -14,6 +18,13 @@ public class PlaylistStateManager {
 
 	public boolean addTrack(PlaylistItem item, int position) {
 		playlist.add(position, item);
+		if(playlist.get(position).equals(item)){
+			if(position == 0){//start of the list
+				//notify the playlistrepresentation in some way
+			} else if (position == 1){
+				
+			}
+		}
 		return (playlist.get(position).equals(item));
 	}
 
@@ -22,7 +33,15 @@ public class PlaylistStateManager {
 	}
 
 	public boolean removeTrack(int position) {
-		return playlist.remove(position) != null;
+		PlaylistItem check = playlist.remove(position);
+		if(check != null){
+			if(position == 0){
+				
+			} else if(position == 1){
+				
+			}
+		}
+		return check != null;
 	}
 	
 	//If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.

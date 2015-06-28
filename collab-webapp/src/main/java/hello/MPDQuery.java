@@ -3,22 +3,33 @@ package hello;
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
 
+import hello.BoomBox.TickTask;
+
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Timer;
 
 public class MPDQuery implements Query{
 
-	private MPDDatabase database;
+	private Database database;
 	private Hashtable<String, MPDSong> hashTable;
 
-	public MPDQuery(MPDDatabase database) {
+	public MPDQuery(Database database) {
 		this.database = database;
 		hashTable = new Hashtable<String, MPDSong>();
-		ArrayList<MPDSong> allSongList = database.listAllSongs();
+		ArrayList<MPDSong> allSongList = (ArrayList<MPDSong>) database.listAllSongs();
+		for(MPDSong song : allSongList) {
+			hashTable.put(hash(song), song);
+		}
+	}
+	
+	public MPDQuery(){
+		database = ;
+		ArrayList<MPDSong> allSongList = (ArrayList<MPDSong>) database.listAllSongs();
 		for(MPDSong song : allSongList) {
 			hashTable.put(hash(song), song);
 		}
@@ -43,11 +54,15 @@ public class MPDQuery implements Query{
 	public Map<String, Object> searchSong(String song){
 		return songListToJSONList(database.findTitle(song));
 	}
+	
+	public Map<String, Object> listAll(){
+		return songListToJSONList(database.listAllSongs());
+	}
 
 	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
 		//TODO: FIX ME!!!!!!
 		//Should include the hash for this song: method is below.
-		return "";
+		return new HashMap<String, Object>();
 	}
 
 	private Map<String, Object> songListToJSONList(Collection<MPDSong> songList) {

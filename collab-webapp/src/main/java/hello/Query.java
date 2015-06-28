@@ -1,6 +1,5 @@
 package hello;
 
-import java.util.List;
 import java.util.Map;
 
 public interface Query {
@@ -12,8 +11,8 @@ public interface Query {
 	public Map<String, Object> searchGenre(String genre);
 	public Map<String, Object> searchAlbum(String album);
 	public Map<String, Object> searchSong(String song);
-	protected String hash(MPDSong song);
-	public MPDSong getSong(String hash);
+	//protected String hash(MPDSong song);//This should likely only be in MPDQuery.
+	//public MPDSong getSong(String hash);//Same for this.
 	//this one is temporary but should be informative
 	public Map<String, Object> listAll();
 };
