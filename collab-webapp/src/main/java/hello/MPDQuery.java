@@ -21,20 +21,7 @@ public class MPDQuery implements Query{
 	
 	public MPDQuery() {
 		//this is just a stub to satisfy the compiler temporarily
-		try {
-			MPD mpd = new MPD.Builder()
-			.port(6001)
-			.password("password")
-			.build();
-			
-			database = mpd.getDatabase();
-			mpd.getAdmin().updateDatabase();
-			
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-		
-		
+		database = HookerUpper.mpdglobal.getDatabase();
 	}
 
 	public MPDQuery(Database database) {

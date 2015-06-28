@@ -13,7 +13,7 @@ public class HookerUpper {
 	public final int portNumber = 6001;
 	public final String password = "password";
 
-	private MPD mpd = null;
+	public static MPD mpdglobal = null;
 	// private Player player;
 	// private Database database;
 	// private Admin admin;
@@ -27,7 +27,7 @@ public class HookerUpper {
 		//playlist = new PlaylistStateManager();
 
 		try {
-            mpd = new MPD.Builder()
+            mpdglobal = new MPD.Builder()
                         .port(portNumber)
                         .password(password)
                         .build();

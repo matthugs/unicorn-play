@@ -1,4 +1,4 @@
-package hello;
+/*package hello;
 //import org.bff.javampd.events.*;
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
@@ -133,4 +133,4 @@ public class BoomBox implements MPDBox{
 		mpdPlaylist.clearPlaylist();
 		playSong(song);
 	}
-}
+}*/

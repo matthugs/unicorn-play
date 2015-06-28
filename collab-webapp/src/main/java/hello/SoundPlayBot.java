@@ -37,7 +37,7 @@ public class SoundPlayBot extends VanillaBot {
     @Override
 	public void init() {
     	System.out.println("Initialized (Not necessarily properly)!");
-    	this.boomBox = new BoomBox(6001); //note: ACTUALLY GET A BOOMBOX FROM SOMEWHERE.
+    	//this.boomBox = new BoomBox(6001); //note: ACTUALLY GET A BOOMBOX FROM SOMEWHERE.
 	}//may be good enough for this; pretty much just means 'given a working boombox'.
 	
 	/*
