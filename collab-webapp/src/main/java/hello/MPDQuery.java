@@ -19,15 +19,19 @@ public class MPDQuery implements Query{
 	private Database database;
 	private Hashtable<String, MPDSong> hashTable;
 
+	public MPDQuery() {
+		//this is just a stub to satisfy the compiler temporarily
+	}
 
 	public MPDQuery(Database database) {
 		this.database = database;
 		hashTable = new Hashtable<String, MPDSong>();
+		Collection<MPDSong> allSongList = null;
 		try{
-		Collection<MPDSong> allSongList = database.listAllSongs();
+			allSongList = database.listAllSongs();
 		}
 		catch (MPDDatabaseException e) {
-			Logger.error("sttuf");
+			//Logger.error("sttuf");
 		}
 		for(MPDSong song : allSongList) {
 			hashTable.put(hash(song), song);
@@ -35,37 +39,67 @@ public class MPDQuery implements Query{
 	}
 
 	public Map<String, Object> searchAny(String criteria){
-		return songListToJSONList(database.findAny(criteria));
-	}
-
-	public Map<String, Object> searchArtist(String artist){
-		return songListToJSONList(database.findArtist(artist));
-	}
-
-	public Map<String, Object> searchGenre(String genre){
+		Map<String, Object> ret = null;
 		try{
-		HashMap<String, Object> ret = songListToJSONList(database.findGenre(genre));
+			ret = songListToMap(database.findAny(criteria));
 		}
 		catch(Exception e) {
 
 		}
+		return ret;
+	}
+
+	public Map<String, Object> searchArtist(String artist){
+		Map<String, Object> ret = null;
+		try{
+			ret = songListToMap(database.findArtist(artist));
+		}
+		catch(Exception e) {
+
+		}
+		return ret;
+	}
+
+	public Map<String, Object> searchGenre(String genre){
+		Map<String, Object> ret = null;
+		try{
+			ret = songListToMap(database.findGenre(genre));
+		}
+		catch(Exception e) {
+
+		}
+		return ret;
 	}
 
 	public Map<String, Object> searchAlbum(String album){
-		return songListToJSONList(database.findAlbum(album));
+		Map<String, Object> ret = null;
+		try{
+			ret = songListToMap(database.findAlbum(album));
+		}
+		catch(Exception e) {
+
+		}
+		return ret;
 	}
 
 	public Map<String, Object> searchSong(String song){
-		return songListToJSONList(database.findTitle(song));
+		Map<String, Object> ret = null;
+		try{
+			ret = songListToMap(database.findTitle(song));
+		}
+		catch(Exception e) {
+
+		}
+		return ret;
 	}
 
-	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
+	private Map<String, Object> mpdSongToMap(MPDSong mpdsong){
 		//TODO: FIX ME!!!!!!
 		//Should include the hash for this song: method is below.
 		return new HashMap<String, Object>();
 	}
 
-	private Map<String, Object> songListToJSONList(Collection<MPDSong> songList) {
+	private Map<String, Object> songListToMap(Collection<MPDSong> songList) {
 		/*List<String> ret = new ArrayList<String>();
 		for(MPDSong song : songList) {
 			ret.add(mpdSongToJSON(song));
@@ -74,7 +108,7 @@ public class MPDQuery implements Query{
 		Map<String, Object> ret = new HashMap<String, Object>();
 		for(MPDSong song : songList) {
 			//the value should be a JSON object with the same data as the frontend list.
-			ret.put(song.getName(), mpdSongToJSON(song));
+			ret.put(song.getName(), mpdSongToMap(song));
 			//may need to figure out a different key.
 		}
 		return ret;
@@ -89,6 +123,13 @@ public class MPDQuery implements Query{
 	}
 
 	public Map<String, Object> listAll() {
-		return songListToJSONList(database.listAllSongs());
+		Map<String, Object> map = null;
+		try{
+			map = songListToMap(database.listAllSongs());
+		}
+		catch(Exception e) {
+
+		}
+		return map;
 	}
 }

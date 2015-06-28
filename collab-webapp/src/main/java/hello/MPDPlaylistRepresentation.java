@@ -17,9 +17,13 @@ public class MPDPlaylistRepresentation{
 		this.timer = new Timer();
 		//timer.schedule(new ChangePoller(), (current.getLength()*1000 - 4000), 500);
 		this.mpd = mpd;
-		this.playlist = mpd.getPlaylist();
-		
-		mpd.getAdmin().updateDatabase();
+		try{
+			this.playlist = mpd.getPlaylist();
+			mpd.getAdmin().updateDatabase();
+		}
+		catch (Exception e){
+
+		}
 		current = null;
 		next = null;
 
@@ -68,7 +72,7 @@ public class MPDPlaylistRepresentation{
 		catch (Exception e) {
 			System.out.println("i really should figure out loggin");
 		}
-
+		return true;
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -80,7 +84,7 @@ public class MPDPlaylistRepresentation{
 		public void run() {
 			try{
 				//System.out.println("inside the try block");
-				thisTime = (long) player.getElapsedTime();
+				thisTime = (long) mpd.getPlayer().getElapsedTime();
 
 				if(thisTime < lastTime){
 					lastTime = thisTime;
