@@ -1,10 +1,5 @@
 package hello;//subject to change
-import org.bff.javampd.*;
 
-import java.util.List;
-import java.util.Scanner;
-
-import org.coweb.SessionManager;
 import org.coweb.bots.VanillaBot;
 import org.coweb.bots.Proxy; //Used to send messages back to the session - don't need this right now
 
@@ -32,7 +27,7 @@ public class QueryBot extends VanillaBot {
     @Override
 	public void init() {
     	System.out.println("Initialized (Not necessarily properly)!");
-    	this.qre = ;//need to figure out how to get the query bot.
+    	this.qre = new MPDQuery();
 	}
 	
 	/*

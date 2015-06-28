@@ -1,6 +1,9 @@
 package hello;
 
 import java.util.ArrayList;
+import org.bff.javampd.objects.*;
+
+import java.util.HashMap;
 
 public class PlaylistStateManager {
 	public ArrayList<PlaylistItem> playlist;
@@ -71,5 +74,22 @@ public class PlaylistStateManager {
 
 	protected boolean updateTheMPDPlaylist(){
 		return true;
+	}
+
+	protected boolean updateCurrentlyPlaying(MPDSong song){
+		try{
+			//FIXME to use a playlistItem and not a song
+			//playlist.set(0, song);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+	protected PlaylistItem getNextSong() {
+		//TODO
+		return new PlaylistItem(new HashMap<String, Object>());
 	}
 }

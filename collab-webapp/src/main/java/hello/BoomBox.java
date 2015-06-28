@@ -14,12 +14,12 @@ public class BoomBox implements MPDBox{
 	private Admin admin;
 	private Playlist mpdPlaylist;
 	private Timer timer;
-	private ICollabPlaylist playlist;
+	private PlaylistStateManager playlist;
 	private Query query;
 
 	public BoomBox(int portNumber) {
-		query = new MPDQuery();
-		playlist = new CollabPlaylist();
+		
+		playlist = new PlaylistStateManager(null);
 
 		try {
             mpd = new MPD.Builder()
@@ -32,7 +32,7 @@ public class BoomBox implements MPDBox{
 	        database = mpd.getDatabase();
 			admin = mpd.getAdmin();
 	        mpdPlaylist = mpd.getPlaylist();
-
+	        query = new MPDQuery(database);
 	        //Make sure MPD scans the appropriate folders and has all available tracks
 	        //in its database
 	        admin.updateDatabase();
@@ -130,7 +130,7 @@ public class BoomBox implements MPDBox{
 
 	public void playFromHash(String hash) throws Exception{
 		MPDSong song = query.getSong(hash);
-		mpdPlaylist.clear();
+		mpdPlaylist.clearPlaylist();
 		playSong(song);
 	}
 }
