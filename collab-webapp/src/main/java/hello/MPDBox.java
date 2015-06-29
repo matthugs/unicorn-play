@@ -7,12 +7,12 @@ public interface MPDBox {
 	 * What is important is that it searches for a song with the appropriate hash, puts it in the front of the playlist, and then plays it.
 	 * It works like the currently existing addSong except that it can be more appropriately used by the frontend.
 	 */
-	// public void playFromHash(String hash) throws Exception;
+	public void playFromHash(String hash) throws Exception;
 	
-	
-	//  * These are things that the player should probably have and already does.
-	//  * I'll deal with querying features in the moderator's interface.
-	 
+	/*
+	 * These are things that the player should probably have and already does.
+	 * I'll deal with querying features in the moderator's interface.
+	 */
 	
 	public void play() throws Exception;
 	
