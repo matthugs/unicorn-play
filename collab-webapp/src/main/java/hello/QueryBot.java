@@ -27,7 +27,6 @@ public class QueryBot extends VanillaBot {
     @Override
 	public void init() {
     	System.out.println("Initialized (Not necessarily properly)!");
-    	this.qre = new MPDQuery();
 	}
 	
 	/*
@@ -36,7 +35,9 @@ public class QueryBot extends VanillaBot {
 	 */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
 		//send this data back to the user (so the front end can hopefully use it)
-        this.proxy.reply(this, replyToken, qre.listAll());
+    	this.qre = new MPDQuery();
+        Map<String, Object> replyParams = qre.listAll();
+        this.proxy.reply(this, replyToken, replyParams);
         //actually surprisingly easy to extend if the front end can use the contents properly.
 	}
 	
