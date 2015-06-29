@@ -49,16 +49,6 @@ define(
 		//ngController init
 		app.controller("playlistCtr", function($scope, $http) {
 
-			//loading library
-			//$http.get('lib.json').
-			//success(function(data, status, headers, config) {
-				console.log("find libray");
-				$scope.lib = lib;
-		//	}).
-		//	error(function(data, status, headers, config) {
-		//		console.log("loading data error, lib.json");
-		//	});
-
 
 			//loading playlist
 		//	$http.get('playlist.json').
@@ -71,21 +61,21 @@ define(
 		//	});
 
 
-			$scope.collab = coweb.initCollab({id:"nonsense"});
-			$scope.collab.subscribeSync("listChange", this, function(args){
-				console.log("detect list Change!!");
-				console.log(args.value);
-				if (playlist !== args.value) {
-					playlist = args.value;
-					$scope.playlist = playlist;
-					$scope.$apply();
-					console.log("update remotely");
-					console.log($scope.playlist);
-				}
+		$scope.collab = coweb.initCollab({id:"nonsense"});
+		$scope.collab.subscribeSync("listChange", this, function(args){
+			console.log("detect list Change!!");
+			console.log(args.value);
+			if (playlist !== args.value) {
+				playlist = args.value;
+				$scope.playlist = playlist;
+				$scope.$apply();
+				console.log("update remotely");
+				console.log($scope.playlist);
+			}
 
-			});
+		});
 
-			$scope.$watchCollection( function() {return playlist},
+		$scope.$watchCollection( function() {return playlist},
 			function(newValue, oldValue){
 				if (typeof newValue !== 'undefined') {
 					$scope.playlist = playlist;
@@ -96,18 +86,44 @@ define(
 			);
 
 
-		});
+	});
 
-		app.controller("libraryCtr", function($scope, $http) {
-		$scope.searchArtistText = "search artist";
-		$scope.searchArtist = function() {
-			console.log("about to search artist " + $scope.searchArtistText);
-				//this.collab.postService("player",{query: $scope.searchArtistText}, function() {console.log("Success")});
+app.controller("libraryCtr", function($scope, $http) {
+
+
+	//loading library
+			//$http.get('lib.json').
+			//success(function(data, status, headers, config) {
+				console.log("find libray");
+				$scope.lib = lib;
+		//	}).
+		//	error(function(data, status, headers, config) {
+		//		console.log("loading data error, lib.json");
+		//	});
+
+	$scope.searchArtistText = "search artist";
+	$scope.searchArtist = function() {
+		console.log("about to search artist " + $scope.searchArtistText);
+		console.log(this.collab.postService("query",{query: $scope.searchArtistText}, function(args) {
+			console.log("find service");
+			console.log(args);
+		})
+		);
+		$scope.lib = [];
+	}
+
+
+	$scope.$watchCollection( function() {return $scope.lib},
+		function(newValue, oldValue){
+			if (typeof newValue !== 'undefined') {
+				$scope.lib = newValue;
+				console.log('updating lib list');
 			}
+		}
+		);
+		$scope.collab = coweb.initCollab({id:"nonsense"});
 
-			$scope.collab = coweb.initCollab({id:"nonsense"});
-
-			$scope.addSong = function(song, singer){
+		$scope.addSong = function(song, singer){
 			//	var newSong = function() {
 			//		this.song = song;
 			//		this.singer = singer;
