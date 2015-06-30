@@ -107,9 +107,10 @@ app.controller("libraryCtr", function($scope, $http) {
 		console.log(this.collab.postService("query",{query: $scope.searchArtistText}, function(args) {
 			console.log("find service");
 			console.log(args);
+			console.log(args.value.list);
+      $scope.lib = args.value.list;
 		})
 		);
-		$scope.lib = [];
 	}
 
 
