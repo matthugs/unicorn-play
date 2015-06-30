@@ -6,19 +6,20 @@ define(
 	"angular",
 	"angular-route",
 	"bootstrap",
+  "collab/collabInterfaceService"
 	],
 	function(coweb,$,angular,ngRoute) {
 
 		//coweb init
-		var session = coweb.initSession();
-		session.onStatusChange = function(stat) {
-			console.log(stat);
-		};
-		var argumentations = {key: "the-onlu-session"};
-		session.prepare(argumentations);
+//		var session = coweb.initSession();
+//		session.onStatusChange = function(stat) {
+//			console.log(stat);
+//		};
+//		var argumentations = {key: "the-onlu-session"};
+//		session.prepare(argumentations);
 
 		//angular module init
-		var app = angular.module('coPlaylist', ['ngRoute']);
+		var app = angular.module('coPlaylist', ['ngRoute', "coPlaylist.collabInterface"]);
 
 		//playlist, SHOULD NOT BE HERE FINALLY
 		var playlist = [
@@ -47,7 +48,11 @@ define(
 		});
 
 		//ngController init
-		app.controller("playlistCtr", function($scope, $http) {
+		app.controller("playlistCtr", [
+        "collabInterface",
+        "$scope",
+        "$http",
+        function(collab, $scope, $http) {
 
 
 			//loading playlist
@@ -61,7 +66,7 @@ define(
 		//	});
 
 
-		$scope.collab = coweb.initCollab({id:"nonsense"});
+		$scope.collab = collab;
 		$scope.collab.subscribeSync("listChange", this, function(args){
 			console.log("detect list Change!!");
 			console.log(args.value);
@@ -86,7 +91,7 @@ define(
 			);
 
 
-	});
+	}]);
 
 app.controller("libraryCtr", function($scope, $http) {
 
