@@ -12,9 +12,9 @@ define(
                  
 			$routeProvider
 			.when( '/library', { templateUrl: 'library/library.tmp.html', controller: 'libraryCtr' } )
-			.when( '/libBySong', { templateUrl: 'song.html', controller: 'libraryCtr' } )
-			.when( '/libByAlbum', { templateUrl: 'album.html', controller: 'libraryCtr' } )
-			.when( '/libByArtist', { templateUrl: 'artist.html' , controller: 'libraryCtr' } )
+			.when( '/libBySong', { templateUrl: 'library/song.tmp.html', controller: 'libraryCtr' } )
+			.when( '/libByAlbum', { templateUrl: 'library/album.tmp.html', controller: 'libraryCtr' } )
+			.when( '/libByArtist', { templateUrl: 'library/artist.tmp.html' , controller: 'libraryCtr' } )
     }]);
     app.controller("libraryCtr", [
       "collabInterface",
