@@ -1,4 +1,4 @@
-package hello;//subject to change
+package querybot;//subject to change
 
 import org.coweb.bots.VanillaBot;
 import org.coweb.bots.Proxy; //Used to send messages back to the session - don't need this right now

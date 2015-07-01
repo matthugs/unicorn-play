@@ -1,4 +1,4 @@
-package hello;
+package querybot;
 
 import java.util.Map;
 import org.bff.javampd.objects.*;
