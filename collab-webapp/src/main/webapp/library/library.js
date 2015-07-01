@@ -11,7 +11,7 @@ define(
                function($routeProvider) {
                  
 			$routeProvider
-			.when( '/library', { templateUrl: 'library.html', controller: 'libraryCtr' } )
+			.when( '/library', { templateUrl: 'library/library.tmp.html', controller: 'libraryCtr' } )
 			.when( '/libBySong', { templateUrl: 'song.html', controller: 'libraryCtr' } )
 			.when( '/libByAlbum', { templateUrl: 'album.html', controller: 'libraryCtr' } )
 			.when( '/libByArtist', { templateUrl: 'artist.html' , controller: 'libraryCtr' } )
