@@ -1,30 +1,13 @@
 //handle loading data and changing data
 define(
 	[
-	"coweb/main",
 	"jQuery",
 	"angular",
 	"angular-route",
 	"bootstrap",
   "collab/collabInterfaceService",
-  "library/library.js"
 	],
-	function(coweb,$,angular,ngRoute) {
-
-		//coweb init
-//		var session = coweb.initSession();
-//		session.onStatusChange = function(stat) {
-//			console.log(stat);
-//		};
-//		var argumentations = {key: "the-onlu-session"};
-//		session.prepare(argumentations);
-
-		//angular module init
-    var app = angular.module('coPlaylist',
-                             ['ngRoute',
-                               "coPlaylist.collabInterface",
-                               "coPlaylist.library"
-    ]);
+	function($,angular,ngRoute) {
 
     //playlist, SHOULD NOT BE HERE FINALLY
     var playlist = [
@@ -32,17 +15,14 @@ define(
       {"song":"Criminal", "singer":"Britney Spear"},
       {"song":"Broke hearted", "singer":"Karmin"}
     ];
+    var app = angular.module("coPlaylist.playlist",
+                             ["coPlaylist.collabInterface"]);
 
     //library, SHOULD NOT BE HERE FINALLY
     //ngRoute init
     app.config( function ( $routeProvider ) {
       $routeProvider
-      .when( '/playlist', { templateUrl: 'playlist.html', controller: 'playlistCtr' })
-      //.when( '/library', { templateUrl: 'library.html', controller: 'libraryCtr' } )
-      //.when( '/libBySong', { templateUrl: 'song.html', controller: 'libraryCtr' } )
-      //.when( '/libByAlbum', { templateUrl: 'album.html', controller: 'libraryCtr' } )
-      //.when( '/libByArtist', { templateUrl: 'artist.html' , controller: 'libraryCtr' } )
-      .otherwise( { redirectTo: '/playlist' } );
+      .when( '/playlist', { templateUrl: 'playlist/playlist.tmp.html', controller: 'playlistCtr' });
     });
 
     //ngController init
