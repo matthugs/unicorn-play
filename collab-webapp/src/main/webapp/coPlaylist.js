@@ -6,7 +6,6 @@ define(
   function(angular) {
     var app = angular.module('coPlaylist',
                              ['ngRoute',
-                               "coPlaylist.collabInterface",
                                "coPlaylist.playlist",
                                "coPlaylist.library"
     ]);
