@@ -33,8 +33,12 @@ define(
         //loading library
         //$http.get('lib.json').
         //success(function(data, status, headers, config) {
-        console.log("find libray");
-        $scope.lib = lib;
+        collab.postService("query",{query: $scope.searchArtistText},
+                             function(args) {
+                               console.log(args.value.list);
+                               $scope.lib = args.value.list;
+                                console.log("find libray");
+                             });
         //	}).
         //	error(function(data, status, headers, config) {
         //		console.log("loading data error, lib.json");
