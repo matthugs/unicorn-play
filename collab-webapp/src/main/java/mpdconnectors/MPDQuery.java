@@ -23,7 +23,7 @@ public class MPDQuery implements Query{
 	
 	public MPDQuery() {
 		//this is just a stub to satisfy the compiler temporarily
-		database = HookerUpper.mpdglobal.getDatabase();
+		database = MPDWrapper.getMPD().getDatabase();
 	}
 
 	public MPDQuery(Database database) {

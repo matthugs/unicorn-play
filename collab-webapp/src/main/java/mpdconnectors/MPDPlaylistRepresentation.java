@@ -17,7 +17,7 @@ public class MPDPlaylistRepresentation{
 		this.playlistStateManager = playlistStateManager;
 		this.timer = new Timer();
 		//timer.schedule(new ChangePoller(), (current.getLength()*1000 - 4000), 500);
-		mpd = HookerUpper.mpdglobal;
+		mpd = MPDWrapper.getMPD();
 		try{
 			this.playlist = mpd.getPlaylist();
 			mpd.getAdmin().updateDatabase();
