@@ -1,5 +1,7 @@
 package moderator;
 
+import mpdconnectors.MPDPlaylistRepresentation;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

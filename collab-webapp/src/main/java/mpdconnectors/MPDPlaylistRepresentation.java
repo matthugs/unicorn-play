@@ -27,7 +27,7 @@ public class MPDPlaylistRepresentation{
 			mpd.getAdmin().updateDatabase();
 		}
 		catch (Exception e){
-
+			logger.error(e.getMessage());
 		}
 		current = null;
 		next = null;
@@ -45,7 +45,7 @@ public class MPDPlaylistRepresentation{
 				mpd.getPlayer().play();
 			}
 			catch(Exception e) {
-				System.out.println("i really should figure out loggin");
+				logger.warn("Song not found");
 				ret = false;
 			}
 		}
@@ -62,7 +62,7 @@ public class MPDPlaylistRepresentation{
 				}
 			}
 			catch(Exception e){
-				System.out.println("i really should figure out loggin");
+				logger.warn("Song not found");
 				ret = false;
 			}
 		}
