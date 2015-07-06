@@ -1,10 +1,10 @@
-package mpdconnector;
+package mpdconnectors;
 
-import querybot.Query;
+import querybot.IQuery;
+import objects.PlaylistItem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
 import org.bff.javampd.exception.*;
@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class MPDQuery implements Query{
+public class MPDQuery implements IQuery{
 	private static final Logger logger = LogManager.getLogger();
 
 	private Database database;
@@ -35,7 +35,7 @@ public class MPDQuery implements Query{
 			allSongList = database.listAllSongs();
 		}
 		catch (MPDDatabaseException e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		for(MPDSong song : allSongList) {
 			hashTable.put(hash(song), song);
@@ -48,7 +48,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findAny(criteria));
 		}
 		catch(Exception e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -59,7 +59,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findArtist(artist));
 		}
 		catch(Exception e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -70,7 +70,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findGenre(genre));
 		}
 		catch(Exception e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -81,7 +81,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findAlbum(album));
 		}
 		catch(Exception e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -92,7 +92,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findTitle(song));
 		}
 		catch(Exception e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -103,7 +103,7 @@ public class MPDQuery implements Query{
 			map = songListToMap(database.listAllSongs());
 		}
 		catch(Exception e) {
-			logger.warn(e.getMessage);
+			logger.warn(e.getMessage());
 		}
 		return map;
 	}
@@ -132,7 +132,12 @@ public class MPDQuery implements Query{
 		return (song.getArtistName() + song.getTitle());
 	}
 	
-	public MPDSong getSong(String hash){
+	public PlaylistItem getSong(String hash){
 		return hashTable.get(hash);
+	}
+
+	public String hash(PlaylistItem song) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

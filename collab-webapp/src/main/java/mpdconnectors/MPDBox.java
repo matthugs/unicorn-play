@@ -1,4 +1,4 @@
-package hello;
+package mpdconnectors;
 
 public interface MPDBox {
 	/*

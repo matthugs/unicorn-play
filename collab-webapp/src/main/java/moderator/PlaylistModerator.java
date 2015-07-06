@@ -1,5 +1,7 @@
 package moderator;
 
+import objects.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +18,6 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	public PlaylistStateManager manager;//maybe private? we may need public so MPD can talk to it.
 	private CollabInterface collab;
 	boolean isReady = false;
-	HookerUpper hr = null;
 	
 	protected PlaylistModerator(){
 	}
@@ -26,7 +27,6 @@ public class PlaylistModerator extends DefaultSessionModerator {
 		this.collab = this.initCollab("playlist");
 		this.isReady = true;
 		manager = new PlaylistStateManager(this);
-		hr = new HookerUpper();
 	}
 	
     @Override

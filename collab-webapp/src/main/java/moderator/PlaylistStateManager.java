@@ -1,11 +1,13 @@
 package moderator;
 
 import mpdconnectors.MPDPlaylistRepresentation;
+import objects.PlaylistItem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+
 import org.bff.javampd.objects.*;
 
 import java.util.HashMap;
