@@ -1,4 +1,5 @@
-package hello;
+package mpdconnector;
+
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
 import org.apache.logging.log4j.LogManager;

@@ -1,4 +1,7 @@
-package hello;
+package mpdconnector;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
@@ -6,6 +9,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MPDPlaylistRepresentation{
+	private static final Logger logger = LogManager.getLogger();
+
 	MPDSong current;
 	MPDSong next;
 	MPD mpd;
@@ -16,7 +21,6 @@ public class MPDPlaylistRepresentation{
 	public MPDPlaylistRepresentation(PlaylistStateManager playlistStateManager) {
 		this.playlistStateManager = playlistStateManager;
 		this.timer = new Timer();
-		//timer.schedule(new ChangePoller(), (current.getLength()*1000 - 4000), 500);
 		mpd = MPDWrapper.getMPD();
 		try{
 			this.playlist = mpd.getPlaylist();

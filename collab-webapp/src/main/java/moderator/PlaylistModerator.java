@@ -1,4 +1,4 @@
-package hello;
+package moderator;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package hello;
+package moderator;
 
 import java.util.ArrayList;
 import org.bff.javampd.objects.*;

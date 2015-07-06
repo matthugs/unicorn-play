@@ -1,6 +1,6 @@
-package querybot;
+package mpdconnector;
 
-import hello.*;
+import querybot.Query;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MPDQuery implements Query{
+	private static final Logger logger = LogManager.getLogger();
 
 	private Database database;
 	private Hashtable<String, MPDSong> hashTable;
-	private static final Logger logger = LogManager.getLogger();
-	
+
 	public MPDQuery() {
 		//this is just a stub to satisfy the compiler temporarily
 		database = MPDWrapper.getMPD().getDatabase();
@@ -34,7 +34,7 @@ public class MPDQuery implements Query{
 			allSongList = database.listAllSongs();
 		}
 		catch (MPDDatabaseException e) {
-			//Logger.error("sttuf");
+			logger.warn(e.getMessage);
 		}
 		for(MPDSong song : allSongList) {
 			hashTable.put(hash(song), song);
@@ -47,7 +47,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findAny(criteria));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage);
 		}
 		return ret;
 	}
@@ -58,7 +58,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findArtist(artist));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage);
 		}
 		return ret;
 	}
@@ -69,7 +69,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findGenre(genre));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage);
 		}
 		return ret;
 	}
@@ -80,7 +80,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findAlbum(album));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage);
 		}
 		return ret;
 	}
@@ -91,7 +91,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findTitle(song));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage);
 		}
 		return ret;
 	}
@@ -102,7 +102,7 @@ public class MPDQuery implements Query{
 			map = songListToMap(database.listAllSongs());
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage);
 		}
 		return map;
 	}
