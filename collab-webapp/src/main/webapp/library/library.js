@@ -31,6 +31,7 @@ define(
 
 
         $scope.lib = lib;
+        //function of get lib list from service
         collab.postService("query",{query: $scope.searchArtistText},
          function(args) {
           console.log("get lib from service");
