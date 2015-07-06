@@ -1,11 +1,16 @@
 package moderator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import org.bff.javampd.objects.*;
 
 import java.util.HashMap;
 
 public class PlaylistStateManager {
+	private static final Logger logger = LogManager.getLogger();
+
 	public ArrayList<PlaylistItem> playlist;
 	private PlaylistModerator par;//so it can tell the moderator if there's a change from the MPD end
 	private MPDPlaylistRepresentation rep;
@@ -76,7 +81,7 @@ public class PlaylistStateManager {
 		return true;
 	}
 
-	protected boolean updateCurrentlyPlaying(MPDSong song){
+	protected boolean updateCurrentlyPlaying(PlaylistItem song){
 		try{
 			//FIXME to use a playlistItem and not a song
 			//playlist.set(0, song);

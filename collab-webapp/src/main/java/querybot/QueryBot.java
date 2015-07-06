@@ -1,5 +1,8 @@
 package querybot;//subject to change
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.coweb.bots.VanillaBot;
 import org.coweb.bots.Proxy; //Used to send messages back to the session - don't need this right now
 
@@ -8,6 +11,8 @@ import java.util.HashMap;
 import java.io.*;
 
 public class QueryBot extends VanillaBot {
+	private static final Logger logger = LogManager.getLogger();
+	
 	private Proxy proxy = null;
 	Query qre = null;
 	

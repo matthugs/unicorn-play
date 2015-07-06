@@ -1,8 +1,13 @@
 package objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Map;
 
 public class PlaylistEdit extends JSONWrapper {
+	private static final Logger logger = LogManager.getLogger();
+	
 	//The primary difference from playlist item will be the desired features.
 	//To be valid, this requires the type, location, and at least hashID of the edit.
 	private boolean valid;

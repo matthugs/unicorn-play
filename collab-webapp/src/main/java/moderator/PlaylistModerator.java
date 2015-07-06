@@ -1,5 +1,8 @@
 package moderator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Map;
 
 import org.cometd.bayeux.Message;
@@ -8,6 +11,8 @@ import org.coweb.DefaultSessionModerator;
 import org.coweb.SessionModerator;
 
 public class PlaylistModerator extends DefaultSessionModerator {
+	private static final Logger logger = LogManager.getLogger();
+
 	public PlaylistStateManager manager;//maybe private? we may need public so MPD can talk to it.
 	private CollabInterface collab;
 	boolean isReady = false;
