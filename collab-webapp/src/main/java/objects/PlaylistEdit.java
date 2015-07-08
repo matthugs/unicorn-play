@@ -11,12 +11,14 @@ public class PlaylistEdit extends JSONWrapper {
 	//The primary difference from playlist item will be the desired features.
 	//To be valid, this requires the type, location, and at least hashID of the edit.
 	private boolean valid;
-	private String topic;
-	private String type;
-	private Integer site;
+	private String topic; // Hey William, what is this intended for?
+	private String type; //insert, delete, update, null
+	private Integer site; // Hey William, what is this intended for?
 	private PlaylistItem value;//it's a JSON object.
 	//need to know more to know exactly what 'value' should have, but chances are it'll have the hash
 	private Integer position;
+	
+	
 	public PlaylistEdit(Map<String, Object> map) {
 		super(map);
 		valid = true;
@@ -25,18 +27,21 @@ public class PlaylistEdit extends JSONWrapper {
 		} catch (Exception ClassCastException){
 			topic = null;
 			valid = false;
+			logger.warn("Bad topic");
 		}
 		try{
 			type = (String)map.get("type");
 		} catch (Exception ClassCastException){
 			type = null;
 			valid = false;
+			logger.warn("Bad type");
 		}
 		try{
 			site = (Integer) map.get("site");
 		} catch (Exception ClassCastException){
 			site = null;
 			valid = false;
+			logger.warn("Bad site");
 		}
 		try{
 			value = new PlaylistItem((Map<String, Object>) map.get("value"));

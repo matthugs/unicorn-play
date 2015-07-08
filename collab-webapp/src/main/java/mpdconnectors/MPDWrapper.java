@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
 
-public class MPDWrapper {
+public final class MPDWrapper {
 
 	private static final Logger logger = LogManager.getLogger();
 

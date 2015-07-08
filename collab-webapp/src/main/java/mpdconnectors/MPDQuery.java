@@ -1,5 +1,5 @@
 package mpdconnectors;
-
+//holy crap I edited this in eclipse
 import querybot.IQuery;
 import objects.PlaylistItem;
 
@@ -18,29 +18,17 @@ import java.util.Map;
 
 public class MPDQuery implements IQuery{
 	private static final Logger logger = LogManager.getLogger();
+	
+	private SongConverter converter = SongConverter.getConverter();
 
 	private Database database;
-	private Hashtable<String, MPDSong> hashTable;
 
 	public MPDQuery() {
 		//this is just a stub to satisfy the compiler temporarily
 		database = MPDWrapper.getMPD().getDatabase();
 	}
 
-	public MPDQuery(Database database) {
-		this.database = database;
-		hashTable = new Hashtable<String, MPDSong>();
-		Collection<MPDSong> allSongList = null;
-		try{
-			allSongList = database.listAllSongs();
-		}
-		catch (MPDDatabaseException e) {
-			logger.warn(e.getMessage());
-		}
-		for(MPDSong song : allSongList) {
-			hashTable.put(hash(song), song);
-		}
-	}
+	//refactored so that hashtable construction happens all in the SongConverter
 
 	public Map<String, Object> searchAny(String criteria){
 		Map<String, Object> ret = null;
@@ -108,14 +96,14 @@ public class MPDQuery implements IQuery{
 		return map;
 	}
 
-	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
-		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName()).getMap();
-	}
+//	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
+//		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName()).getMap();
+//	}
 
 	private Map<String, Object> songListToMap(Collection<MPDSong> songList) {
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();//list of playlist objects (maps)
 		for(MPDSong song : songList) {
-			set.add(mpdSongToJSON(song));
+			set.add(converter.mpdSongToPlaylistItem(song).getMap());
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.put("list", set);//Only actual parameter for this
@@ -128,12 +116,7 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
-	public String hash(MPDSong song){
-		return (song.getArtistName() + song.getTitle());
-	}
-	
-	public PlaylistItem getSong(String hash){
-		MPDSong mpdsong = hashTable.get(hash);
-		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName());
+	public PlaylistItem getSong(String hash) {
+		return converter.hashToPlaylistItem(hash);
 	}
 }
