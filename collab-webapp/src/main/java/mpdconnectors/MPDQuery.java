@@ -1,5 +1,5 @@
 package mpdconnectors;
-
+//holy crap I edited this in eclipse
 import querybot.IQuery;
 import objects.PlaylistItem;
 
