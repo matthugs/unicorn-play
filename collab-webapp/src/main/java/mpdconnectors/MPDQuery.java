@@ -133,11 +133,7 @@ public class MPDQuery implements IQuery{
 	}
 	
 	public PlaylistItem getSong(String hash){
-		return hashTable.get(hash);
-	}
-
-	public String hash(PlaylistItem song) {
-		// TODO Auto-generated method stub
-		return null;
+		MPDSong mpdsong = hashTable.get(hash);
+		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName());
 	}
 }
