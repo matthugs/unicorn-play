@@ -14,8 +14,8 @@ public interface IQuery {
 	public Map<String, Object> searchGenre(String genre);
 	public Map<String, Object> searchAlbum(String album);
 	public Map<String, Object> searchSong(String song);
-	public String hash(PlaylistItem song);
+	// public String hash(PlaylistItem song);
 	public PlaylistItem getSong(String hash);
-	//this one is temporary but should be informative
+	// this one is temporary but should be informative
 	public Map<String, Object> listAll();
 };

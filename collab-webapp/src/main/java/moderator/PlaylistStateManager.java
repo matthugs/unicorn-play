@@ -12,17 +12,19 @@ import org.bff.javampd.objects.*;
 
 import java.util.HashMap;
 
-public class PlaylistStateManager {
+public class PlaylistStateManager implements IPlaylistUpdate{
 	private static final Logger logger = LogManager.getLogger();
 
 	public ArrayList<PlaylistItem> playlist;
 	private PlaylistModerator par;//so it can tell the moderator if there's a change from the MPD end
-	private MPDPlaylistRepresentation rep;
+	private MPDPlaylistRepresentation updater;
+	
 	public PlaylistStateManager(PlaylistModerator ins){
 		playlist = new ArrayList<PlaylistItem>();
 		par = ins;
-		rep = new MPDPlaylistRepresentation(this);
+		updater = new MPDPlaylistRepresentation(this);
 	}
+	
 	//This should specify if it needs to add to the start or end, but right now it adds to the end.
 	public boolean addTrack(PlaylistItem song){
 		return playlist.add(song);
@@ -76,16 +78,11 @@ public class PlaylistStateManager {
 		return true;
 	}
 
-	//remove the song that just finished playing
-	protected boolean popTop(){
-		return true;
-	}
-
 	protected boolean updateTheMPDPlaylist(){
 		return true;
 	}
 
-	protected boolean updateCurrentlyPlaying(PlaylistItem song){
+	public boolean updateCurrentlyPlaying(PlaylistItem song){
 		try{
 			//FIXME to use a playlistItem and not a song
 			//playlist.set(0, song);
@@ -100,5 +97,29 @@ public class PlaylistStateManager {
 	protected PlaylistItem getNextSong() {
 		//TODO
 		return new PlaylistItem(new HashMap<String, Object>());
+	}
+	
+	
+	@Override
+	public void popCurrentlyPlaying() {
+		playlist.remove(0);
+		
+		//Should pull next from collaboration model
+		
+		
+	}
+	@Override
+	public boolean verifyCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
+		boolean ret = false;
+		
+		if (playlist.get(0).equals(whatMPDIsCurrentlyPlaying)) {
+			ret = true;
+		}
+		
+		return ret;
+	}
+	@Override
+	public void forceCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
+		playlist.add(0, whatMPDIsCurrentlyPlaying);
 	}
 }
