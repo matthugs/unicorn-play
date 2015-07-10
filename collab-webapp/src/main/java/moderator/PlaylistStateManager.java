@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.bff.javampd.objects.*;
 
@@ -58,55 +60,21 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		return check != null;
 	}
 	
-	//If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.
-	public boolean promoteTrack(PlaylistItem song, int positions){
-		return true;
-	}
-
-	public boolean pushToTop(PlaylistItem item) {
-		return true;
-	}
-
 	//for onNewJoin or whatever that method is in the moderator
-	public boolean getMap(){ //kinda crappy method name
+	public List<Map<String, Object>> getMap(){ //kinda crappy method name
 		//for every item
 		//get the Map<String, Object> and package them together
-		return true;
-	}
-
-	protected boolean pushNextToMPD(){
-		return true;
-	}
-
-	protected boolean updateTheMPDPlaylist(){
-		return true;
-	}
-
-	public boolean updateCurrentlyPlaying(PlaylistItem song){
-		try{
-			//FIXME to use a playlistItem and not a song
-			//playlist.set(0, song);
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		for(PlaylistItem item : playlist) {
+			ret.add(item.getMap());
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return true;
+		return ret;
 	}
 
-	protected PlaylistItem getNextSong() {
-		//TODO
-		return new PlaylistItem(new HashMap<String, Object>());
-	}
-	
-	
 	@Override
 	public void popCurrentlyPlaying() {
 		playlist.remove(0);
-		
 		//Should pull next from collaboration model
-		
-		
 	}
 	@Override
 	public boolean verifyCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
@@ -122,4 +90,40 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	public void forceCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
 		playlist.add(0, whatMPDIsCurrentlyPlaying);
 	}
+
+	@Override
+	public PlaylistItem getNext() {
+		return playlist.get(1);
+	}
+
+	// //If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.
+	// public boolean promoteTrack(PlaylistItem song, int positions){
+	// 	return true;
+	// }
+
+	// public boolean pushToTop(PlaylistItem item) {
+	// 	return true;
+	// }
+
+	// protected boolean pushNextToMPD(){
+	// 	return true;
+	// }
+
+	// protected boolean updateTheMPDPlaylist(){
+	// 	return true;
+	// }
+
+	// public boolean updateCurrentlyPlaying(PlaylistItem song){
+	// 	try{
+	// 		//FIXME to use a playlistItem and not a song
+	// 		//playlist.set(0, song);
+	// 	}
+	// 	catch (Exception e) {
+	// 		e.printStackTrace();
+	// 	}
+
+	// 	return true;
+	// }
+
+
 }

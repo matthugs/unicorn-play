@@ -14,4 +14,5 @@ public interface IPlaylistUpdate {
 	// Included as insurance against errors.
 	public boolean verifyCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying); //should return true if MPD and the playlistStateManager agree, false else
 	public void forceCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying); // forces the top item on the playlist to be this track that MPD is currently playing
+	public PlaylistItem getNext();
 }

@@ -1,6 +1,7 @@
 package mpdconnectors;
 
 import moderator.PlaylistStateManager;
+import moderator.IPlaylistUpdate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +20,7 @@ public class MPDPlaylistRepresentation{
 	MPDSong next;
 	MPD mpd;
 	Playlist playlist;
-	PlaylistStateManager playlistStateManager;
+	IPlaylistUpdate playlistStateManager;
 	Timer timer;
 
 	public MPDPlaylistRepresentation(PlaylistStateManager playlistStateManager) {
@@ -76,7 +77,7 @@ public class MPDPlaylistRepresentation{
 	public boolean setNext(MPDSong song) {
 		next = song;
 		try {
-			playlist.swap(song, 1);
+			playlist.swap(next, 1);
 		}
 		catch (Exception e) {
 			System.out.println("i really should figure out loggin");
@@ -97,8 +98,13 @@ public class MPDPlaylistRepresentation{
 
 				if(thisTime < lastTime){
 					lastTime = thisTime;
-					playlistStateManager.updateCurrentlyPlaying(converter.mpdSongToPlaylistItem(mpd.getPlayer().getCurrentSong()));
-					//next = playlistStateManager.getNextSong();
+					setCurrent(next);
+					setNext(converter.playlistItemToMPDSong(playlistStateManager.getNext()));
+
+					playlistStateManager.popCurrentlyPlaying();
+					if(playlistStateManager.verifyCurrentlyPlaying(converter.mpdSongToPlaylistItem(current)) == false) {
+						playlistStateManager.forceCurrentlyPlaying(converter.mpdSongToPlaylistItem(current));
+					}
 				}
 				else {
 					//System.out.println("do I have a logical error?? Look:" + thisTime);
