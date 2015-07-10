@@ -21,19 +21,19 @@ public class PlaylistItem extends JSONWrapper {
 		valid = true;
 		try{
 			song = (String)map.get("song");
-		} catch (Exception ClassCastException){
+		} catch (ClassCastException e){
 			song = null;
 			valid = false;
 		}
 		try{
 			singer = (String)map.get("singer");
-		} catch (Exception ClassCastException){
+		} catch (ClassCastException e){
 			singer = null;
 			valid = false;
 		}
 		try{
 			hash = (String)map.get("hash");
-		} catch (Exception ClassCastException){
+		} catch (ClassCastException e){
 			hash = null;
 			valid = false;
 		}

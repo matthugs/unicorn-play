@@ -41,8 +41,9 @@ public class QueryBot extends VanillaBot {
 	 */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
 		//parse the request
-		String reqtype = (String)params.get("type");
-		String reqcrit = (String)params.get("search");
+		String reqtype = (String)params.get("type");//what they're narrowing the search down by
+		String reqcrit = (String)params.get("search");//the text being searched for
+		String rettype = (String)params.get("return");//the return type
 		Map<String, Object> replyParams;
 		if(reqtype.equals("artist")){
 			replyParams = qre.searchArtist(reqcrit);
