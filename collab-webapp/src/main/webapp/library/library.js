@@ -2,11 +2,12 @@ define(
   [
   "angular",
   "angular-route",
-  "collab/collabInterfaceService"
+  "collab/collabInterfaceService",
+  "playlist/playlist"
   ],
   function(angular, ngRoute) {
     var app = angular.module("coPlaylist.library",
-     ["coPlaylist.collabInterface"]);
+     ["coPlaylist.collabInterface","coPlaylist.playlist"]);
     app.config(["$routeProvider",
      function($routeProvider) {
 
@@ -16,13 +17,20 @@ define(
        .when( '/libByAlbum', { templateUrl: 'library/album.tmp.html', controller: 'albumCtr' } )
        .when( '/libByArtist', { templateUrl: 'library/artist.tmp.html' , controller: 'artistCtr' } )
      }]);
-    
+    app.service("queryService", function(){
+      this.searchAlbumsByArtist = "";
+      this.updatesearchAlbumsByArtist = function(artist) {
+        this.searchAlbumsByArtist = artist;
+      };
+
+    });
 
     app.controller("songCtr", [
       "collabInterface",
+      "playlistService",
       "$scope",
       "$http",
-      function(collab, $scope, $http) {
+      function(collab, playlistService, $scope, $http) {
 
         collab.postService("query",{query: $scope.searchArtistText},
          function(args) {
@@ -42,13 +50,22 @@ define(
             }
           }
           );
+
+        $scope.addSong = function(song, singer){
+         playlistService.add(song, singer);
+         console.log("add new song locally from lib page: " + song +
+           " " + singer);
+
+       };
+
      }]);
 
     app.controller("albumCtr", [
       "collabInterface",
       "$scope",
       "$http",
-      function(collab, $scope, $http) {
+      "queryService",
+      function(collab, $scope, $http,queryService) {
 
         collab.postService("query",{query: $scope.searchArtistText},
          function(args) {
@@ -75,7 +92,8 @@ define(
       "collabInterface",
       "$scope",
       "$http",
-      function(collab, $scope, $http) {
+      "queryService",
+      function(collab, $scope, $http,queryService) {
 
         collab.postService("query",{query: $scope.searchArtistText},
          function(args) {
@@ -85,18 +103,18 @@ define(
            $scope.$apply();
          });
 
-        $scope.searchArtistText = "search artist";
-        $scope.searchArtist = function() {
-          console.log("about to search artist " + $scope.searchArtistText);
-         // $scope.lib = [];
-          collab.postService("query",{query: $scope.searchArtistText},
-           function(args) {
-            console.log("get artist list from server");
-             console.log(args.value.list);
-             $scope.lib = args.value.list;
-           });
+        // $scope.searchArtistText = "search artist";
+        // $scope.searchArtist = function() {
+        //   console.log("about to search artist " + $scope.searchArtistText);
+        //  // $scope.lib = [];
+        //   collab.postService("query",{query: $scope.searchArtistText},
+        //    function(args) {
+        //     console.log("get artist list from server");
+        //      console.log(args.value.list);
+        //      $scope.lib = args.value.list;
+        //    });
 
-        }
+        //}
 
 
         $scope.$watchCollection( "lib",
@@ -110,14 +128,9 @@ define(
           }
           );
 
-        $scope.addSong = function(song, singer){
-
-          $scope.playlist.push({song : song, singer : singer});
-
-         $scope.playlist = playlist;
-         console.log("add new song locally : " + song +
-           " " + singer);
-         collab.sendSync("listChange", $scope.playlist);
+        $scope.goToAlbums = function(singer) {
+         queryService.updatesearchAlbumsByArtist(singer);
+         console.log("get albums for"+ singer);
        };
      }]);
 }

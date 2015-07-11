@@ -9,12 +9,6 @@ define(
 	],
 	function($,angular,ngRoute) {
 
-    //playlist, SHOULD NOT BE HERE FINALLY
-    var playlist = [
-      {"song":"Not Enough", "singer":"Avril Lavigne"},
-      {"song":"Criminal", "singer":"Britney Spear"},
-      {"song":"Broke hearted", "singer":"Karmin"}
-    ];
     var app = angular.module("coPlaylist.playlist",
                              ["coPlaylist.collabInterface"]);
 
@@ -25,19 +19,51 @@ define(
       .when( '/playlist', { templateUrl: 'playlist/playlist.tmp.html', controller: 'playlistCtr' });
     });
 
+
+    app.service('playlistService', [
+      "collabInterface",
+      function(collab){
+
+
+       var playlist = [
+      {"song":"Not Enough", "singer":"Avril Lavigne"},
+      {"song":"Criminal", "singer":"Britney Spear"},
+      {"song":"Broke hearted", "singer":"Karmin"}
+    ];
+
+    this.getPlaylist = function() {
+      return playlist;
+    };
+
+    this.updatePlaylist = function (newPlaylist) {
+      playlist = newPlaylist;
+      console.log(playlist);
+    }
+
+
+    this.add = function(song, singer) {
+
+      playlist.push({song:song, singer:singer});
+      collab.sendSync("listChange", playlist);
+      console.log("send sysn" + playlist);
+      
+    }
+    }]);
+
     //ngController init
     app.controller("playlistCtr", [
       "collabInterface",
       "$scope",
       "$http",
-      function(collab, $scope, $http) {
+      "playlistService",
+      function(collab, $scope, $http, playlistService) {
 
 
         //loading playlist
         //	$http.get('playlist.json').
         //	success(function(data, status, headers, config) {
         console.log("find playlist");
-        $scope.playlist = playlist;
+        $scope.playlist = playlistService.getPlaylist();
         //	}).
         //	error(function(data, status, headers, config) {
         //		console.log("loading data error, playlist.js");
@@ -47,22 +73,23 @@ define(
         collab.subscribeSync("listChange", this, function(args){
           console.log("detect list Change!!");
           console.log(args.value);
-          if (playlist !== args.value) {
-            playlist = args.value;
-            $scope.playlist = playlist;
+          if (args.value != null) {
+            playlistService.updatePlaylist(args.value);
+            $scope.playlist = args.value;
+            console.log("update playlist playlist page");
             $scope.$apply();
-            console.log("update remotely");
-            console.log($scope.playlist);
-          }
-
+          };
+          
         });
 
-        $scope.$watchCollection( function() {return playlist},
+        $scope.$watchCollection( "playlist",
                                 function(newValue, oldValue){
+                                  console.log("locally detect change");
                                   if (typeof newValue !== 'undefined') {
-                                    $scope.playlist = playlist;
+                                    $scope.playlist = newValue;
                                     console.log('updating playlist');
-                                    console.log($scope.playlist);
+                                    console.log(playlistService.getPlaylist());
+
                                   }
                                 }
                                );
