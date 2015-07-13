@@ -50,4 +50,12 @@ public class PlaylistModerator extends DefaultSessionModerator {
 			}
     	}
     }
+
+	public void removeTop() {
+		collab.sendSync("listChange", null, "delete", 0);
+	}
+
+	public void addTop(PlaylistItem current) {
+		collab.sendSync("listChange", current.getMap(), "insert", 0);
+	}
 }

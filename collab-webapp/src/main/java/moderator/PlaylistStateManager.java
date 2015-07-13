@@ -70,10 +70,11 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		}
 		return ret;
 	}
-
+    //these need to be mirrored by the Moderator.
 	@Override
 	public void popCurrentlyPlaying() {
-		playlist.remove(0);
+		playlist.remove(0);//depending on how sendsync works this may be double-removing
+		par.removeTop();
 		//Should pull next from collaboration model
 	}
 	@Override
@@ -88,7 +89,8 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	}
 	@Override
 	public void forceCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
-		playlist.add(0, whatMPDIsCurrentlyPlaying);
+		playlist.add(0, whatMPDIsCurrentlyPlaying);//depending on how sendsync works this may be double-adding
+		par.addTop(whatMPDIsCurrentlyPlaying);
 	}
 
 	@Override
