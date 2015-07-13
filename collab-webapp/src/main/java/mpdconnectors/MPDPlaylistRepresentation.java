@@ -1,29 +1,38 @@
-package hello;
+package mpdconnectors;
 
+import moderator.PlaylistStateManager;
+import moderator.IPlaylistUpdate;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bff.javampd.*;
 import org.bff.javampd.objects.*;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MPDPlaylistRepresentation{
+	private static final Logger logger = LogManager.getLogger();
+	
+	SongConverter converter = SongConverter.getConverter();
+
 	MPDSong current;
 	MPDSong next;
 	MPD mpd;
 	Playlist playlist;
-	PlaylistStateManager playlistStateManager;
+	IPlaylistUpdate playlistStateManager;
 	Timer timer;
 
 	public MPDPlaylistRepresentation(PlaylistStateManager playlistStateManager) {
 		this.playlistStateManager = playlistStateManager;
 		this.timer = new Timer();
-		//timer.schedule(new ChangePoller(), (current.getLength()*1000 - 4000), 500);
-		mpd = HookerUpper.mpdglobal;
+		mpd = MPDWrapper.getMPD();
 		try{
 			this.playlist = mpd.getPlaylist();
 			mpd.getAdmin().updateDatabase();
 		}
 		catch (Exception e){
-
+			logger.error(e.getMessage());
 		}
 		current = null;
 		next = null;
@@ -41,7 +50,7 @@ public class MPDPlaylistRepresentation{
 				mpd.getPlayer().play();
 			}
 			catch(Exception e) {
-				System.out.println("i really should figure out loggin");
+				logger.warn("Song not found");
 				ret = false;
 			}
 		}
@@ -58,7 +67,7 @@ public class MPDPlaylistRepresentation{
 				}
 			}
 			catch(Exception e){
-				System.out.println("i really should figure out loggin");
+				logger.warn("Song not found");
 				ret = false;
 			}
 		}
@@ -68,7 +77,7 @@ public class MPDPlaylistRepresentation{
 	public boolean setNext(MPDSong song) {
 		next = song;
 		try {
-			playlist.swap(song, 1);
+			playlist.swap(next, 1);
 		}
 		catch (Exception e) {
 			System.out.println("i really should figure out loggin");
@@ -89,8 +98,13 @@ public class MPDPlaylistRepresentation{
 
 				if(thisTime < lastTime){
 					lastTime = thisTime;
-					playlistStateManager.updateCurrentlyPlaying(mpd.getPlayer().getCurrentSong());
-					//next = playlistStateManager.getNextSong();
+					setCurrent(next);
+					setNext(converter.playlistItemToMPDSong(playlistStateManager.getNext()));
+
+					playlistStateManager.popCurrentlyPlaying();
+					if(playlistStateManager.verifyCurrentlyPlaying(converter.mpdSongToPlaylistItem(current)) == false) {
+						playlistStateManager.forceCurrentlyPlaying(converter.mpdSongToPlaylistItem(current));
+					}
 				}
 				else {
 					//System.out.println("do I have a logical error?? Look:" + thisTime);

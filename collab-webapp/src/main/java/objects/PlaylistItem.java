@@ -1,9 +1,14 @@
-package hello;
+package objects;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PlaylistItem extends JSONWrapper {
+	private static final Logger logger = LogManager.getLogger();
+
 	//A hash string should be one of the things in here, something that can be passed
 	//to the hashtable to get an MPDSong object
 	private boolean valid;
@@ -16,19 +21,19 @@ public class PlaylistItem extends JSONWrapper {
 		valid = true;
 		try{
 			song = (String)map.get("song");
-		} catch (Exception ClassCastException){
+		} catch (ClassCastException e){
 			song = null;
 			valid = false;
 		}
 		try{
 			singer = (String)map.get("singer");
-		} catch (Exception ClassCastException){
+		} catch (ClassCastException e){
 			singer = null;
 			valid = false;
 		}
 		try{
 			hash = (String)map.get("hash");
-		} catch (Exception ClassCastException){
+		} catch (ClassCastException e){
 			hash = null;
 			valid = false;
 		}

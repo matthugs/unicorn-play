@@ -1,4 +1,7 @@
-package hello;
+package mpdconnectors;
+//holy crap I edited this in eclipse
+import querybot.IQuery;
+import objects.PlaylistItem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,31 +16,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class MPDQuery implements Query{
-
-	private Database database;
-	private Hashtable<String, MPDSong> hashTable;
+public class MPDQuery implements IQuery{
 	private static final Logger logger = LogManager.getLogger();
 	
+	private SongConverter converter = SongConverter.getConverter();
+
+	private Database database;
+
 	public MPDQuery() {
 		//this is just a stub to satisfy the compiler temporarily
-		database = HookerUpper.mpdglobal.getDatabase();
+		database = MPDWrapper.getMPD().getDatabase();
 	}
 
-	public MPDQuery(Database database) {
-		this.database = database;
-		hashTable = new Hashtable<String, MPDSong>();
-		Collection<MPDSong> allSongList = null;
-		try{
-			allSongList = database.listAllSongs();
-		}
-		catch (MPDDatabaseException e) {
-			//Logger.error("sttuf");
-		}
-		for(MPDSong song : allSongList) {
-			hashTable.put(hash(song), song);
-		}
-	}
+	//refactored so that hashtable construction happens all in the SongConverter
 
 	public Map<String, Object> searchAny(String criteria){
 		Map<String, Object> ret = null;
@@ -45,7 +36,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findAny(criteria));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -56,7 +47,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findArtist(artist));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -67,7 +58,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findGenre(genre));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -78,7 +69,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findAlbum(album));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -89,7 +80,7 @@ public class MPDQuery implements Query{
 			ret = songListToMap(database.findTitle(song));
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage());
 		}
 		return ret;
 	}
@@ -100,19 +91,19 @@ public class MPDQuery implements Query{
 			map = songListToMap(database.listAllSongs());
 		}
 		catch(Exception e) {
-
+			logger.warn(e.getMessage());
 		}
 		return map;
 	}
 
-	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
-		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName()).getMap();
-	}
+//	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
+//		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName()).getMap();
+//	}
 
 	private Map<String, Object> songListToMap(Collection<MPDSong> songList) {
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();//list of playlist objects (maps)
 		for(MPDSong song : songList) {
-			set.add(mpdSongToJSON(song));
+			set.add(converter.mpdSongToPlaylistItem(song).getMap());
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.put("list", set);//Only actual parameter for this
@@ -125,11 +116,7 @@ public class MPDQuery implements Query{
 		return ret;
 	}
 
-	public String hash(MPDSong song){
-		return (song.getArtistName() + song.getTitle());
-	}
-	
-	public MPDSong getSong(String hash){
-		return hashTable.get(hash);
+	public PlaylistItem getSong(String hash) {
+		return converter.hashToPlaylistItem(hash);
 	}
 }

@@ -1,4 +1,9 @@
-package hello;
+package moderator;
+
+import objects.*;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
@@ -8,10 +13,11 @@ import org.coweb.DefaultSessionModerator;
 import org.coweb.SessionModerator;
 
 public class PlaylistModerator extends DefaultSessionModerator {
+	private static final Logger logger = LogManager.getLogger();
+
 	public PlaylistStateManager manager;//maybe private? we may need public so MPD can talk to it.
 	private CollabInterface collab;
 	boolean isReady = false;
-	HookerUpper hr = null;
 	
 	protected PlaylistModerator(){
 	}
@@ -21,7 +27,6 @@ public class PlaylistModerator extends DefaultSessionModerator {
 		this.collab = this.initCollab("playlist");
 		this.isReady = true;
 		manager = new PlaylistStateManager(this);
-		hr = new HookerUpper();
 	}
 	
     @Override
@@ -45,4 +50,12 @@ public class PlaylistModerator extends DefaultSessionModerator {
 			}
     	}
     }
+
+	public void removeTop() {
+		collab.sendSync("listChange", null, "delete", 0);
+	}
+
+	public void addTop(PlaylistItem current) {
+		collab.sendSync("listChange", current.getMap(), "insert", 0);
+	}
 }

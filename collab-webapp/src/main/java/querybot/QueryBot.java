@@ -1,15 +1,20 @@
-package hello;//subject to change
+package querybot;//subject to change
 
+import mpdconnectors.MPDQuery;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.coweb.bots.VanillaBot;
 import org.coweb.bots.Proxy; //Used to send messages back to the session - don't need this right now
 
 import java.util.Map;
-import java.util.HashMap;
 import java.io.*;
 
 public class QueryBot extends VanillaBot {
+	private static final Logger logger = LogManager.getLogger();
+	
 	private Proxy proxy = null;
-	Query qre = null;
+	IQuery qre = null;
 	
 	/*
 	 * They say this is necessary for all bots
@@ -25,8 +30,9 @@ public class QueryBot extends VanillaBot {
 	}
 
     @Override
-	public void init() {
+	public synchronized void init() {
     	System.out.println("Initialized (Not necessarily properly)!");
+    	qre = new MPDQuery();
 	}
 	
 	/*
@@ -34,9 +40,23 @@ public class QueryBot extends VanillaBot {
 	 * For purposes of this, a lot of these parameters aren't relevant.
 	 */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
+		//parse the request
+		String reqtype = (String)params.get("filter-by");//what they're narrowing the search down by
+		String reqcrit = (String)params.get("filter-value");//the text being searched for
+		String rettype = (String)params.get("listing-type");//the return type
+		Map<String, Object> replyParams;
+		if(reqtype.equals("Artist")){
+			replyParams = qre.searchArtist(reqcrit);
+		} else if(reqtype.equals("Album")){
+			replyParams = qre.searchAlbum(reqcrit);
+		} else if(reqtype.equals("Song")){
+			replyParams = qre.searchSong(reqcrit);
+		} else if(reqtype.equals("Any")){
+			replyParams = qre.searchAny(reqcrit);
+		} else{
+			replyParams = qre.listAll();
+		}
 		//send this data back to the user (so the front end can hopefully use it)
-    	this.qre = new MPDQuery();
-        Map<String, Object> replyParams = qre.listAll();
         this.proxy.reply(this, replyToken, replyParams);
         //actually surprisingly easy to extend if the front end can use the contents properly.
 	}
