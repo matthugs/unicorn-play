@@ -5,17 +5,27 @@ import java.util.Map;
 
 import objects.PlaylistItem;
 
-public interface IQuery {
-	// all of these need to return in the form of a map containing JSON objects
-	// The objects in question will have to be composed from MPD info... perhaps we could have a different constructor of PlaylistItem to make sure we get everything?
-	// This is the only format we can actually return in with the bot.
+public interface IQuery {	
+	/* These methods take in string search criteria and return a list of songs in
+	 * Map<String, Object> format
+	 */
 	public Map<String, Object> searchAny(String criteria);
 	public Map<String, Object> searchArtist(String artist);
 	public Map<String, Object> searchGenre(String genre);
 	public Map<String, Object> searchAlbum(String album);
 	public Map<String, Object> searchSong(String song);
+	
+	/* This method takes in a string search criteria and returns a list of Albums 
+	 * as opposed to the methods above which return Songs 
+	 */
 	public Map<String, Object> searchArtistAlbums(String artist);//returns list of albums
+	
+	/* This method takes in a string search criteria and returns a list of Artists */
 	public Map<String, Object> searchforArtists(String artist);//returns list of artists
+
+	public Map<String, Object> listAllAlbumsByArtist(String artist);
+
+
 	public PlaylistItem getSong(String hash);
 	// this one is temporary but should be informative
 	public Map<String, Object> listAll();

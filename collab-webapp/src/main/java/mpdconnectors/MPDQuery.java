@@ -1,6 +1,7 @@
 package mpdconnectors;
 //holy crap I edited this in eclipse
 import querybot.IQuery;
+import objects.ArtistItem;
 import objects.PlaylistItem;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +51,12 @@ public class MPDQuery implements IQuery{
 			logger.warn(e.getMessage());
 		}
 		return ret;
+	}
+
+	private Map<String, Object> artistsToMap(
+			Collection<MPDArtist> listAllArtists) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public Map<String, Object> searchGenre(String genre){
@@ -118,5 +125,57 @@ public class MPDQuery implements IQuery{
 
 	public PlaylistItem getSong(String hash) {
 		return converter.hashToPlaylistItem(hash);
+	}
+
+	@Override
+	public Map<String, Object> searchArtistAlbums(String artist) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> searchforArtists(String artist) {
+		Map<String, Object> ret = null;
+		try{
+			if(artist.equals("")){
+				ret = artistsToMap(database.listAllArtists());
+			}
+			else{
+				//search by artist to return a list of songs. There is no direct support for 
+				//searching by string to return a list of MPDArtists.
+				Collection<MPDSong> songList = database.findArtist(artist);
+				Collection<String> artistList = new ArrayList<String>();
+				
+				//filter out just the artists to a list
+				for(MPDSong song : songList) {
+					if( !artistList.contains(song.getArtistName())){
+						artistList.add(song.getArtistName());
+					}
+				}
+				
+				ret = artistStringsToMap(artistList);
+			}
+		}
+		catch(Exception e) {
+			logger.warn(e.getMessage());
+		}
+		return ret;
+	}
+
+	private Map<String, Object> artistStringsToMap(Collection<String> artistList) {
+		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
+		
+		for(String artist : artistList) {
+			set.add(new ArtistItem(artist).getMap());
+		}
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("list", set);
+		return ret;
+	}
+
+	@Override
+	public Map<String, Object> listAllAlbumsByArtist(String artist) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
