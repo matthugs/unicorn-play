@@ -35,8 +35,8 @@ define(
       return playlist;
     };
 
-    this.updatePlaylist = function (newPlaylist) {
-      playlist = newPlaylist;
+    this.updatePlaylistAdd = function (song) {
+      playlist.push(song);
       console.log(playlist);
     }
 
@@ -44,7 +44,7 @@ define(
     this.add = function(song, singer) {
 
       playlist.push({song:song, singer:singer});
-      collab.sendSync("listChange", playlist);
+      collab.sendSync("listChange", {song:song,singer:singer}, type='insert');
       console.log("send sysn" + playlist);
       
     }
@@ -71,11 +71,11 @@ define(
 
 
         collab.subscribeSync("listChange", this, function(args){
-          console.log("detect list Change!!");
+          console.log("detect remote add song!");
           console.log(args.value);
           if (args.value != null) {
-            playlistService.updatePlaylist(args.value);
-            $scope.playlist = args.value;
+            playlistService.updatePlaylistAdd(args.value);
+            
             console.log("update playlist playlist page");
             $scope.$apply();
           };
