@@ -32,7 +32,7 @@ define(
       "$http",
       function(collab, playlistService, $scope, $http) {
 
-        collab.postService("query",{query: $scope.searchArtistText},
+        collab.postService("query",{query: {"listing-type":"Track"}},
          function(args) {
           console.log("get lib from service");
           console.log(args);
@@ -67,7 +67,7 @@ define(
       "queryService",
       function(collab, $scope, $http,queryService) {
 
-        collab.postService("query",{query: $scope.searchArtistText},
+        collab.postService("query",{query: {"listing-type": "Album"}},
          function(args) {
           console.log("get lib from service");
           console.log(args);
@@ -95,7 +95,7 @@ define(
       "queryService",
       function(collab, $scope, $http,queryService) {
 
-        collab.postService("query",{query: $scope.searchArtistText},
+        collab.postService("query",{query: {"listing-type": "Artist"}},
          function(args) {
           console.log("get lib from service");
           console.log(args);
