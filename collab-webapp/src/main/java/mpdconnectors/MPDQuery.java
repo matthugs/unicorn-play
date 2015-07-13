@@ -55,8 +55,11 @@ public class MPDQuery implements IQuery{
 
 	private Map<String, Object> artistsToMap(
 			Collection<MPDArtist> listAllArtists) {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<String> artistToString = new ArrayList<String>();
+		for(MPDArtist artist : listAllArtists) {
+			artistToString.add(artist.toString());
+		}
+		return artistStringsToMap(artistToString);
 	}
 
 	public Map<String, Object> searchGenre(String genre){
