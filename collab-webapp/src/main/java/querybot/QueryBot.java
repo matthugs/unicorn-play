@@ -44,8 +44,8 @@ public class QueryBot extends VanillaBot {
 		String reqtype = (String)params.get("filter-by");//what they're narrowing the search down by
 		String reqcrit = (String)params.get("filter-value");//the text being searched for
 		String rettype = (String)params.get("listing-type");//the return type
-		Map<String, Object> replyParams;
-		if(reqtype.equals("Artist")){
+		Map<String, Object> replyParams = null;
+		/*if(reqtype.equals("Artist")){
 			replyParams = qre.searchArtist(reqcrit);
 		} else if(reqtype.equals("Album")){
 			replyParams = qre.searchAlbum(reqcrit);
@@ -54,6 +54,29 @@ public class QueryBot extends VanillaBot {
 		} else if(reqtype.equals("Any")){
 			replyParams = qre.searchAny(reqcrit);
 		} else{
+			replyParams = qre.listAll();
+		}*/
+		if(rettype != null){
+			if(rettype.equals("Artist")){
+				replyParams = qre.searchforArtists("");
+			}
+			else if(rettype.equals("Album")){
+				replyParams = qre.searchArtistAlbums("");
+			} else if(rettype.equals("Track")){
+				if(reqtype != null && reqcrit != null){
+					if(reqtype.equals("Artist")){
+						replyParams = qre.searchArtist(reqcrit);
+					} else if(reqtype.equals("Album")){
+						replyParams = qre.searchAlbum(reqcrit);
+					} else if(reqtype.equals("Song")){
+						replyParams = qre.searchSong(reqcrit);
+					} else if(reqtype.equals("Any")){
+						replyParams = qre.searchAny(reqcrit);
+					}
+				}
+			}
+		}
+		if(replyParams == null){
 			replyParams = qre.listAll();
 		}
 		//send this data back to the user (so the front end can hopefully use it)
