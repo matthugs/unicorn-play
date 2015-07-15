@@ -43,11 +43,11 @@ public class PlaylistModerator extends DefaultSessionModerator {
 			}
 			else if(edit.getType().equals("delete")){
 				manager.removeTrack(edit.getPosition());
+			} else {
+				logger.warn("PlaylistEdit Type not insert or delete");
 			}
-			else if(edit.getType().equals("update")){
-				//I don't know if this is actually relevant, same for null
-				//It may be relevant for voting (alters the list value in a way that isn't removal)
-			}
+    	} else {
+    		logger.warn("Invalid PlaylistEdit");
     	}
     }
 

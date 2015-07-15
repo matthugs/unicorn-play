@@ -2,6 +2,7 @@ package mpdconnectors;
 
 import moderator.PlaylistStateManager;
 import moderator.IPlaylistUpdate;
+import objects.PlaylistItem;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +40,11 @@ public class MPDPlaylistRepresentation{
 
 		//don't play yet!
 	}
+	
+	public boolean setCurrent(PlaylistItem item){
+		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
+		return setCurrent(song);
+	}
 
 	public boolean setCurrent(MPDSong song) {
 		boolean ret = true;
@@ -74,7 +80,12 @@ public class MPDPlaylistRepresentation{
 		return ret;
 	}
 
-	public boolean setNext(MPDSong song) {
+	public boolean setNext(PlaylistItem item) {
+		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
+		return setNext(song);
+	}
+	
+	public boolean setNext(MPDSong song){
 		next = song;
 		try {
 			playlist.swap(next, 1);
