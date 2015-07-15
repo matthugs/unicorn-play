@@ -22,7 +22,8 @@ define(
 
     app.service('playlistService', [
       "collabInterface",
-      function(collab){
+      "$rootScope",
+      function(collab, $root){
 
 
        var playlist = [];
@@ -31,16 +32,27 @@ define(
       return playlist;
     };
 
-    this.updatePlaylist = function (newPlaylist) {
-      playlist = newPlaylist;
+    this.updatePlaylistAdd = function (song) {
+      playlist.push(song);
       console.log(playlist);
     }
 
+    collab.subscribeSync("listChange", this, function(args){
+      console.log("detect remote add song!");
+      console.log(args.value);
+      if (args.value != null) {
+        this.updatePlaylistAdd(args.value);
+
+        console.log("update playlist playlist page");
+        $root.$apply();
+      };
+
+    });
 
     this.add = function(song, singer) {
 
       playlist.push({song:song, singer:singer});
-      collab.sendSync("listChange", playlist);
+      collab.sendSync("listChange", {song:song,singer:singer}, type='insert');
       console.log("send sysn" + playlist);
       
     }
@@ -66,17 +78,6 @@ define(
         //	});
 
 
-        collab.subscribeSync("listChange", this, function(args){
-          console.log("detect list Change!!");
-          console.log(args.value);
-          if (args.value != null) {
-            playlistService.updatePlaylist(args.value);
-            $scope.playlist = args.value;
-            console.log("update playlist playlist page");
-            $scope.$apply();
-          };
-          
-        });
 
         $scope.$watchCollection( "playlist",
                                 function(newValue, oldValue){
