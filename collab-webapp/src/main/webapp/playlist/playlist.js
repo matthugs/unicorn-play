@@ -25,11 +25,7 @@ define(
       function(collab){
 
 
-       var playlist = [
-      {"song":"Not Enough", "singer":"Avril Lavigne"},
-      {"song":"Criminal", "singer":"Britney Spear"},
-      {"song":"Broke hearted", "singer":"Karmin"}
-    ];
+       var playlist = [];
 
     this.getPlaylist = function() {
       return playlist;
