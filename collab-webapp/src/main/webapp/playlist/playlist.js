@@ -53,7 +53,9 @@ define(
 
       playlist.push(song);
       collab.sendSync("listChange", song, 'insert', playlist.length - 1);
-      console.log("send sysn" + playlist);
+      console.log("send sync");
+      console.log(song);
+      console.log("added at " + (playlist.length - 1));
       
     }
     }]);
