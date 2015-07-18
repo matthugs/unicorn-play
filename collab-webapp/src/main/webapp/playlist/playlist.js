@@ -49,10 +49,10 @@ define(
 
     });
 
-    this.add = function(song, singer) {
+    this.add = function(song) {
 
-      playlist.push({song:song, singer:singer});
-      collab.sendSync("listChange", {song:song,singer:singer}, type='insert');
+      playlist.push(song);
+      collab.sendSync("listChange", song, 'insert', playlist.length - 1);
       console.log("send sysn" + playlist);
       
     }

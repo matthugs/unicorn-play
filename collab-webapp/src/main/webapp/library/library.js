@@ -51,8 +51,8 @@ define(
           }
           );
 
-        $scope.addSong = function(song, singer){
-         playlistService.add(song, singer);
+        $scope.addSong = function(song){
+         playlistService.add(song);
          console.log("add new song locally from lib page: " + song +
            " " + singer);
 
