@@ -1,6 +1,7 @@
 {
     "moderatorIsUpdater": false,
     "sessionModerator": "moderator.PlaylistModerator",
+    "operationEngine": true,
     "bots": [
         { 
             "name": "Query Bot",
