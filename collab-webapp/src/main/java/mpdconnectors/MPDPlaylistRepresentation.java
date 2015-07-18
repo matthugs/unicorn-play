@@ -87,7 +87,11 @@ public class MPDPlaylistRepresentation{
 	public boolean setNext(MPDSong song){
 		next = song;
 		try {
-			playlist.swap(next, 1);
+			if(playlist.getSongList().size() > 1){
+				playlist.swap(next, 1);
+			} else {
+				playlist.addSong(song);
+			}
 		}
 		catch (Exception e) {
 			logger.warn(e);
