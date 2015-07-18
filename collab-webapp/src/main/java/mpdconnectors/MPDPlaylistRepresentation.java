@@ -51,8 +51,7 @@ public class MPDPlaylistRepresentation{
 		if(current == null) {
 			current = song;
 			try{
-				//FIX THIS TO USE PLAyLIST ITEM
-				//playlist.add(song);
+				playlist.addSong(song);
 				mpd.getPlayer().play();
 			}
 			catch(Exception e) {
@@ -91,7 +90,7 @@ public class MPDPlaylistRepresentation{
 			playlist.swap(next, 1);
 		}
 		catch (Exception e) {
-			System.out.println("i really should figure out loggin");
+			logger.warn(e);
 		}
 		return true;
 	}
