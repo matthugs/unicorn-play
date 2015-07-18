@@ -20,7 +20,6 @@ public final class MPDWrapper {
 		try {
             mpdglobal = new MPD.Builder()
                         .port(portNumber)
-                        .password(password)
                         .build();
         }
         catch (Exception e) {
