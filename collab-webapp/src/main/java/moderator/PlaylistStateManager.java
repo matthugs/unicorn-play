@@ -27,9 +27,17 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		updater = new MPDPlaylistRepresentation(this);
 	}
 	
-	//This should specify if it needs to add to the start or end, but right now it adds to the end.
+	//Appends to the end of the list 
 	public boolean addTrack(PlaylistItem song){
-		return playlist.add(song);
+		if(playlist.isEmpty()) {
+			return addTrack(song, 0);
+		}
+		else if (playlist.size() == 1){
+			return addTrack(song, 1);
+		}
+		else {
+			return playlist.add(song);
+		}
 	}
 
 	public boolean addTrack(PlaylistItem item, int position) {
@@ -41,9 +49,19 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 				updater.setNext(item);
 			}
 		}
+		logger.debug("Track Added: " + item.getSinger() + " - " + item.getSong() + "\nPLAYLIST STATE: \n" + toString());
 		return (playlist.get(position).equals(item));
 	}
-
+	
+	public String toString() {
+		String ret = "";
+		for(int i = 0; i < playlist.size(); i++) {
+			ret += (i + ": " + playlist.get(i).getSinger() + " - " + playlist.get(i).getSong() + "\n");
+		}
+		
+		return ret;
+	}
+	
 	public boolean removeTrack(PlaylistItem song) {
 		return playlist.remove(song);
 	}
