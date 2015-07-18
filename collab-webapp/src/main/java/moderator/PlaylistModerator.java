@@ -20,6 +20,11 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	boolean isReady = false;
 	
 	public PlaylistModerator(){
+		logger.debug("This is a debug message");
+		logger.info("this is an info message");
+		logger.warn("this is a warm message");
+		logger.error("this is an error message");
+		logger.fatal("This is a fatal message");
 	}
 	
 	@Override
