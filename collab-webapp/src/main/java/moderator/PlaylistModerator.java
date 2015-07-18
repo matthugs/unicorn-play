@@ -19,7 +19,7 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	private CollabInterface collab;
 	boolean isReady = false;
 	
-	protected PlaylistModerator(){
+	public PlaylistModerator(){
 	}
 	
 	@Override
