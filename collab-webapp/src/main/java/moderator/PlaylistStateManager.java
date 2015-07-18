@@ -36,9 +36,9 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		playlist.add(position, item);
 		if(playlist.get(position).equals(item)){
 			if(position == 0){//start of the list
-				//notify the playlistrepresentation in some way
+				updater.setCurrent(item);//notify the playlistrepresentation in some way
 			} else if (position == 1){
-				
+				updater.setNext(item);
 			}
 		}
 		return (playlist.get(position).equals(item));

@@ -48,18 +48,21 @@ public class PlaylistEdit extends JSONWrapper {
 		} catch (ClassCastException e){
 			value = null;
 			valid = false;
+			logger.warn("Bad value");
 		}
 		try{
 			position = (Integer) map.get("position");
 		} catch (ClassCastException e){
 			position = null;
 			valid = false;
+			logger.warn("Bad position");
 		}
 		if(!value.isValid()){
 			valid = false;
 		}
 		if(!(type.equals("insert") || type.equals("delete") || type.equals("update") || type.equals("null"))){
 			valid = false;
+			logger.warn("Invalid type");
 		}
 	}
 
