@@ -14,7 +14,7 @@ public class QueryBot extends VanillaBot {
 	private static final Logger logger = LogManager.getLogger();
 	
 	private Proxy proxy = null;
-	IQuery qre = null;
+	IQuery query = null;
 	
 	/*
 	 * They say this is necessary for all bots
@@ -26,13 +26,13 @@ public class QueryBot extends VanillaBot {
 	
     @Override
 	public void onShutdown() {
-    	qre = null;
+    	query = null;
 	}
 
     @Override
 	public synchronized void init() {
     	System.out.println("Initialized (Not necessarily properly)!");
-    	qre = new MPDQuery();
+    	query = new MPDQuery();
 	}
 	
 	/*
@@ -58,26 +58,26 @@ public class QueryBot extends VanillaBot {
 		}*/
 		if(rettype != null){
 			if(rettype.equals("Artist")){
-				replyParams = qre.searchforArtists("");
+				replyParams = query.searchforArtists("");
 			}
 			else if(rettype.equals("Album")){
-				replyParams = qre.searchArtistAlbums("");
+				replyParams = query.searchArtistAlbums("");
 			} else if(rettype.equals("Track")){
 				if(reqtype != null && reqcrit != null){
 					if(reqtype.equals("Artist")){
-						replyParams = qre.searchArtist(reqcrit);
+						replyParams = query.searchArtist(reqcrit);
 					} else if(reqtype.equals("Album")){
-						replyParams = qre.searchAlbum(reqcrit);
+						replyParams = query.searchAlbum(reqcrit);
 					} else if(reqtype.equals("Song")){
-						replyParams = qre.searchSong(reqcrit);
+						replyParams = query.searchSong(reqcrit);
 					} else if(reqtype.equals("Any")){
-						replyParams = qre.searchAny(reqcrit);
+						replyParams = query.searchAny(reqcrit);
 					}
 				}
 			}
 		}
 		if(replyParams == null){
-			replyParams = qre.listAll();
+			replyParams = query.listAll();
 		}
 		//send this data back to the user (so the front end can hopefully use it)
         this.proxy.reply(this, replyToken, replyParams);
