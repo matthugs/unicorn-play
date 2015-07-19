@@ -25,6 +25,7 @@ public class MPDPlaylistRepresentation{
 	Timer timer;
 
 	public MPDPlaylistRepresentation(PlaylistStateManager playlistStateManager) {
+		logger.debug("MPDPlaylistRepresentation INSTANTIATED");
 		this.playlistStateManager = playlistStateManager;
 		this.timer = new Timer();
 		mpd = MPDWrapper.getMPD();
@@ -40,13 +41,37 @@ public class MPDPlaylistRepresentation{
 
 		//don't play yet!
 	}
+
+	public void addSong(PlaylistItem item) {
+		logger.debug("addSong(PlaylistItem) called");
+		try{
+		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
+		addSong(song);
+		}
+		catch(Exception e){
+			logger.error(e.getMessage());
+		}
+	}
+
+	public void addSong(MPDSong song) {
+		try{
+		logger.debug("addSong(MPDSong) called");
+		playlist.addSong(song);
+		mpd.getPlayer().play();
+		}
+		catch(Exception e){
+			logger.error(e.getMessage());
+		}
+	}
 	
 	public boolean setCurrent(PlaylistItem item){
+		logger.debug("setCurrent(PlaylistItem"+ item.getSong() +")");
 		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
 		return setCurrent(song);
 	}
 
 	public boolean setCurrent(MPDSong song) {
+		logger.debug("setCurrent(MPDSong"+ song.getName() +")");
 		boolean ret = true;
 		if(current == null) {
 			current = song;
@@ -65,6 +90,7 @@ public class MPDPlaylistRepresentation{
 				if(playlist.getSongList().isEmpty()) {
 					playlist.addSong(song);
 					mpd.getPlayer().play();
+					timerUpdate(500);
 				}
 				else{ //something is on the playlist, 
 					  //we're swapping out the track that's currently playing
@@ -76,15 +102,21 @@ public class MPDPlaylistRepresentation{
 				ret = false;
 			}
 		}
+
+		logger.debug("current = "+current.getName());
+		//logger.debug("next = "+next.getName());
+
 		return ret;
 	}
 
 	public boolean setNext(PlaylistItem item) {
+		logger.debug("setNext(PlaylistItem"+ item.getSong() +")");
 		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
 		return setNext(song);
 	}
 	
 	public boolean setNext(MPDSong song){
+		logger.debug("setNext(MPDSong"+ song.getName() +")");
 		next = song;
 		try {
 			if(playlist.getSongList().size() > 1){
@@ -96,6 +128,7 @@ public class MPDPlaylistRepresentation{
 		catch (Exception e) {
 			logger.warn(e);
 		}
+
 		return true;
 	}
 
@@ -106,6 +139,7 @@ public class MPDPlaylistRepresentation{
 		long thisTime = 0;
 
 		public void run() {
+			logger.debug("RUN METHOD OF CHANGEPOLLER CALLED OMFG");
 			try{
 				//System.out.println("inside the try block");
 				thisTime = (long) mpd.getPlayer().getElapsedTime();
@@ -119,6 +153,8 @@ public class MPDPlaylistRepresentation{
 					if(playlistStateManager.verifyCurrentlyPlaying(converter.mpdSongToPlaylistItem(current)) == false) {
 						playlistStateManager.forceCurrentlyPlaying(converter.mpdSongToPlaylistItem(current));
 					}
+
+					timerUpdate(500);
 				}
 				else {
 					//System.out.println("do I have a logical error?? Look:" + thisTime);
