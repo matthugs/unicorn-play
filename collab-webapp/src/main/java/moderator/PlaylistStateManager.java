@@ -49,7 +49,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 				updater.setNext(item);
 			}
 		}
-		logger.debug("Track Added: " + item.getSinger() + " - " + item.getSong() + "\nPLAYLIST STATE: \n" + toString());
+		logger.info("Track Added: " + item.getSinger() + " - " + item.getSong() + "\nPLAYLIST STATE: \n" + toString());
 		return (playlist.get(position).equals(item));
 	}
 	

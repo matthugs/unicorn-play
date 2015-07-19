@@ -6,5 +6,6 @@ collab-webapp/.classpath
 collab-webapp/.project
 collab-webapp/.settings/org.eclipse.jdt.core.prefs
 collab-webapp/.settings/org.eclipse.m2e.core.prefs
+collab-webapp/.settings/
 .metadata/
 collab-webapp/src/main/resources/logging.log
