@@ -104,6 +104,7 @@ public class MPDQuery implements IQuery{
 
 	@Override
 	public Map<String, Object> searchforArtists(String artist) {
+		System.out.println("searchForArtists("+artist+") called");
 		Map<String, Object> ret = null;
 		try{
 			if(artist.equals("")){
@@ -135,7 +136,7 @@ public class MPDQuery implements IQuery{
 
 	@Override
 	public Map<String, Object> listAllAlbumsByArtist(String artist) {
-		
+		System.out.println("listAllAlbumsByArtist("+artist+") called");
 		Collection<AlbumItem> albumItemList = new ArrayList<AlbumItem>();
 		Map<String, Object> ret = null;
 		

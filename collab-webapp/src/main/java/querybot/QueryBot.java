@@ -41,37 +41,36 @@ public class QueryBot extends VanillaBot {
 	 */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
 		//parse the request
-		String reqtype = (String)params.get("filter-by");//what they're narrowing the search down by
-		String reqcrit = (String)params.get("filter-value");//the text being searched for
-		String rettype = (String)params.get("listing-type");//the return type
+		String filterBy = (String)params.get("filter-by");//what they're narrowing the search down by
+		String searchTerm = (String)params.get("filter-value");//the text being searched for
+		String returnType = (String)params.get("listing-type");//the return type
 		Map<String, Object> replyParams = null;
-		/*if(reqtype.equals("Artist")){
-			replyParams = qre.searchArtist(reqcrit);
-		} else if(reqtype.equals("Album")){
-			replyParams = qre.searchAlbum(reqcrit);
-		} else if(reqtype.equals("Song")){
-			replyParams = qre.searchSong(reqcrit);
-		} else if(reqtype.equals("Any")){
-			replyParams = qre.searchAny(reqcrit);
-		} else{
-			replyParams = qre.listAll();
-		}*/
-		if(rettype != null){
-			if(rettype.equals("Artist")){
+
+		if(returnType != null){
+			if(returnType.equals("Artist")){
 				replyParams = query.searchforArtists("");
 			}
-			else if(rettype.equals("Album")){
-				replyParams = query.searchArtistAlbums("");
-			} else if(rettype.equals("Track")){
-				if(reqtype != null && reqcrit != null){
-					if(reqtype.equals("Artist")){
-						replyParams = query.searchArtist(reqcrit);
-					} else if(reqtype.equals("Album")){
-						replyParams = query.searchAlbum(reqcrit);
-					} else if(reqtype.equals("Song")){
-						replyParams = query.searchSong(reqcrit);
-					} else if(reqtype.equals("Any")){
-						replyParams = query.searchAny(reqcrit);
+
+			else if(returnType.equals("Album")){
+				
+				if(filterBy.equals("Artist")) {
+					replyParams = query.listAllAlbumsByArtist(searchTerm);
+				}
+				else{
+					replyParams = query.listAllAlbumsByArtist("");
+				}
+			} 
+			
+			else if(returnType.equals("Track")){
+				if(filterBy != null && searchTerm != null){
+					if(filterBy.equals("Artist")){
+						replyParams = query.searchArtist(searchTerm);
+					} else if(filterBy.equals("Album")){
+						replyParams = query.searchAlbum(searchTerm);
+					} else if(filterBy.equals("Song")){
+						replyParams = query.searchSong(searchTerm);
+					} else if(filterBy.equals("Any")){
+						replyParams = query.searchAny(searchTerm);
 					}
 				}
 			}
