@@ -18,9 +18,13 @@ public final class MPDWrapper {
 
 	private MPDWrapper(){
 		try {
+            logger.debug("Constructing global mpd object");
             mpdglobal = new MPD.Builder()
                         .port(portNumber)
                         .build();
+            logger.debug("Clearing Playlist");
+            mpdglobal.getPlaylist().clearPlaylist();
+            
         }
         catch (Exception e) {
         	logger.error("MPD connection error. Is MPD running?");
