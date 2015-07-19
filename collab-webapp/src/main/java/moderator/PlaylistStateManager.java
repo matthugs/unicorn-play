@@ -22,6 +22,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	private MPDPlaylistRepresentation updater;
 	
 	public PlaylistStateManager(PlaylistModerator ins){
+		logger.info("PLAYLIST STATE MANAGER INSTANTIATED");
 		playlist = new ArrayList<PlaylistItem>();
 		par = ins;
 		updater = new MPDPlaylistRepresentation(this);
@@ -49,7 +50,8 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 				updater.setNext(item);
 			}
 		}
-		logger.info("Track Added: " + item.getSinger() + " - " + item.getSong() + "\nPLAYLIST STATE: \n" + toString());
+		logger.info("Track Added: " + item.getSinger() + " - " + item.getSong() + "\n");
+		logger.info("PLAYLIST STATE: \n" + toString());
 		return (playlist.get(position).equals(item));
 	}
 	
