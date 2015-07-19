@@ -1,6 +1,7 @@
 package mpdconnectors;
 //holy crap I edited this in eclipse
 import querybot.IQuery;
+import objects.AlbumItem;
 import objects.ArtistItem;
 import objects.PlaylistItem;
 
@@ -53,15 +54,6 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
-	private Map<String, Object> artistsToMap(
-			Collection<MPDArtist> listAllArtists) {
-		Collection<String> artistToString = new ArrayList<String>();
-		for(MPDArtist artist : listAllArtists) {
-			artistToString.add(artist.toString());
-		}
-		return artistStringsToMap(artistToString);
-	}
-
 	public Map<String, Object> searchGenre(String genre){
 		Map<String, Object> ret = null;
 		try{
@@ -106,34 +98,8 @@ public class MPDQuery implements IQuery{
 		return map;
 	}
 
-//	private Map<String, Object> mpdSongToJSON(MPDSong mpdsong){
-//		return new PlaylistItem(mpdsong.getName(), hash(mpdsong), mpdsong.getArtistName()).getMap();
-//	}
-
-	private Map<String, Object> songListToMap(Collection<MPDSong> songList) {
-		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();//list of playlist objects (maps)
-		for(MPDSong song : songList) {
-			set.add(converter.mpdSongToPlaylistItem(song).getMap());
-		}
-		Map<String, Object> ret = new HashMap<String, Object>();
-		ret.put("list", set);//Only actual parameter for this
-		/*Map<String, Object> ret = new HashMap<String, Object>();
-		for(MPDSong song : songList) {
-			//the value should be a JSON object with the same data as the frontend list.
-			ret.put(song.getName(), mpdSongToMap(song));
-			//may need to figure out a different key.
-		}*/
-		return ret;
-	}
-
 	public PlaylistItem getSong(String hash) {
 		return converter.hashToPlaylistItem(hash);
-	}
-
-	@Override
-	public Map<String, Object> searchArtistAlbums(String artist) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -165,20 +131,84 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
+
+
+	@Override
+	public Map<String, Object> listAllAlbumsByArtist(String artist) {
+		
+		Collection<AlbumItem> albumItemList = new ArrayList<AlbumItem>();
+		Map<String, Object> ret = null;
+		
+		try{
+			Collection<MPDAlbum> mpdAlbumList = database.listAllAlbums();
+
+			if(artist.equals("")){
+				for(MPDAlbum album : mpdAlbumList) {
+					albumItemList.add(new AlbumItem(album.getArtistName(), album.getName()));
+				}
+			}
+			else{
+				//Keep only those albums that have the specified artist name
+				for(MPDAlbum album : mpdAlbumList) {
+					if(album.getArtistName().equals(artist)) {
+						albumItemList.add(new AlbumItem(artist, album.getName()));	
+					}
+				}
+			}
+			ret = albumItemsToMap(albumItemList);
+		}
+		catch(Exception e) {
+			logger.warn(e.getMessage());
+		}
+		return ret;
+	}
+
+	private Map<String, Object> albumItemsToMap(Collection<AlbumItem> albumItemList) {
+		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
+		
+		for(AlbumItem albumItem : albumItemList) {
+			set.add(albumItem.getMap());
+		}
+		
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("list", set);
+		return ret;
+	}
+	
+	
+	private Map<String, Object> songListToMap(Collection<MPDSong> songList) {
+		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();//list of playlist objects (maps)
+	
+		for(MPDSong song : songList) {
+			set.add(converter.mpdSongToPlaylistItem(song).getMap());
+		}
+		
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("list", set);//Only actual parameter for this
+
+		return ret;
+	}
+
+	private Map<String, Object> artistsToMap(
+		Collection<MPDArtist> listAllArtists) {
+		Collection<String> artistToString = new ArrayList<String>();
+		
+		for(MPDArtist artist : listAllArtists) {
+			artistToString.add(artist.getName());
+		}
+		
+		return artistStringsToMap(artistToString);
+	}
+
 	private Map<String, Object> artistStringsToMap(Collection<String> artistList) {
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
 		
 		for(String artist : artistList) {
 			set.add(new ArtistItem(artist).getMap());
 		}
+		
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.put("list", set);
 		return ret;
-	}
-
-	@Override
-	public Map<String, Object> listAllAlbumsByArtist(String artist) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -3,27 +3,33 @@ package objects;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArtistItem extends JSONWrapper {
-	
+public class AlbumItem extends JSONWrapper {
+
 	String artist;
+	String album;
+		
 	boolean valid;
 	
-	public ArtistItem(Map<String, Object> map) {
+	public AlbumItem(Map<String, Object> map) {
 		super(map);
 		valid = true;
 		try{
 			artist = (String)map.get("singer");
+			album = (String) map.get("album");
 		} catch (ClassCastException e){
 			artist = null;
+			album = null;
 			valid = false;
 		}
 	}
 	
-	public ArtistItem(String artist) {
+	public AlbumItem(String artist, String album) {
 		super(new HashMap<String, Object>());
 		valid = true;
+		this.album = album;
 		this.artist = artist;
 		map.put("singer", artist);
+		map.put("album", album);
 	}
 	
 	@Override
