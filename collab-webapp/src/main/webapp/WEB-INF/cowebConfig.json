@@ -1,14 +1,16 @@
 {
     "moderatorIsUpdater": false,
+    "sessionModerator": "moderator.PlaylistModerator",
+    "operationEngine": true,
     "bots": [
-            {
-                "name": "Sound Play Bot",
-                "description": "Does a thing and plays the musics",
-                "author": "William Baldwin",
-                "version": "1.0",
-                "service": "player",
-                "class": "hello.SoundPlayBot"
-            }
+        { 
+            "name": "Query Bot",
+            "description": "Finds things.",
+            "author": "William Baldwin",
+            "version": "1.0",
+            "service": "query",
+            "class": "querybot.QueryBot"
+        }
 
     ]
 } 

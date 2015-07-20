@@ -1,0 +1,13 @@
+ <div class="lib">
+  <div class = "searchBoxContainer">
+    <input type="text" class = "searchBox" ng-model="search"/>
+  </div>
+  <table class="libList">
+    <tr>
+      <th >Singer</th>
+    </tr>
+    <tr ng-repeat="song in lib | filter:search">
+      <td>{{song.singer}}  <button class="addButton" ng-click="goToAlbums(song.singer)"> <a href="#/libByAlbum">choose</button> </td>
+    </tr>
+  </table>
+</div>

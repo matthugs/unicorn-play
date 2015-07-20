@@ -1,7 +1,4 @@
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/resources/dojo.css";
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dijit/themes/claro/claro.css";
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojox/grid/resources/Grid.css";
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojox/grid/resources/claroGrid.css";
+
 html, body {
     margin: 0px;
     padding: 0px;
@@ -10,12 +7,143 @@ html, body {
     height: 100%;
 }
 
-#container {
+a {
+    text-decoration: none;
+}
+
+
+.searchBoxContainer {
+    display: block;
+    height:5%;
     width: 100%;
+    padding:5%;
+}
+
+
+.searchBox{
+    display: block;
+    height:100%;
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    padding: 5px;
+    font-size: 1em;
+}
+
+
+.navButton {
+
+    background: none;
+    border: none;
+    margin:5px;
+}
+
+#playlistNav {
+    float: right;
+}
+
+#libraryNav {
+    float: left;
+}
+
+.container {
+    width: 50%;
+    min-width: 500px;
     height: 100%;
+    margin: auto;
 }
 
 #controls {
     margin: 10px;
     text-align: center;
+}
+
+.selectButton{
+
+    margin: 5px;
+    width: 200px;
+    height:100px;
+    padding: 10px;
+}
+
+#lib{
+
+    width: 100%;
+    height: 100%;
+    
+}
+
+.addButton, .deleteButton{
+    float: right;
+}
+
+table{
+border-collapse: collapse;
+    border-style: hidden;
+    width:80%;
+    margin: auto;
+}
+
+table td, table th{
+border:1px solid black;
+margin:auto;
+text-align: center;
+vertical-align: center;
+padding: 5px;
+}
+
+
+
+#songInLib{
+
+
+}
+
+#grid {
+
+    height:600px;
+}
+
+
+.songInLib {
+    background: none !important;
+}
+
+#lib{
+display: block;
+width: 100%;
+    height: 100%;
+
+}
+
+
+.buttonList {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#libHome {
+
+    width: 50%;
+    margin:auto;
+    padding-top: 5%;
+}
+
+header {
+    border:none;
+    height:3em;
+    margin: auto;
+    display: block;
+    position: relative;;
+}
+
+img {
+    border:none;
+}
+#switchPage {
+    background: url("plusSign.png");
+    background-size: cover;
+    height: 60px;
+    width:60px;
 }
