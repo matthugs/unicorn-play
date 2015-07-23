@@ -72,7 +72,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	 */
 	public boolean addTrack(PlaylistItem item, int position) {
 		logger.debug("addTrack(song, "+position+") called");
-		// playlist.add(position, item);
+		playlist.add(position, item);
 		// if(playlist.get(position).equals(item)){
 		// 	if(position == 0){//start of the list
 		// 		updater.setCurrent(item);//notify the playlistrepresentation in some way
@@ -127,6 +127,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		//get the Map<String, Object> and package them together
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
 		for(PlaylistItem item : playlist) {
+			System.out.println(item.getHash());
 			set.add(item.getMap());
 		}
 		HashMap<String, Object> ret = new HashMap<String,Object>();
