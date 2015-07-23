@@ -14,6 +14,16 @@ import org.bff.javampd.objects.*;
 
 import java.util.HashMap;
 
+/**
+ * Maintains an internal playlist representation and communicates between the interface to MPD and the moderator.
+ * <p>
+ * Functions mainly include adding and removing tracks when told to by the moderator or MPDPlaylistRepresentation.
+ * In either case, it notifies the other object of the changes to maintain playlist consistency.
+ * 
+ * @author William Baldwin
+ * @version 1.0
+ *
+ */
 public class PlaylistStateManager implements IPlaylistUpdate{
 	private static final Logger logger = LogManager.getLogger();
 
@@ -28,7 +38,13 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		updater = new MPDPlaylistRepresentation(this);
 	}
 	
-	//Appends to the end of the list 
+	//Appends to the end of the list
+	/**
+	 * Relays the adding of a track to MPDPlaylistRepresentation.
+	 * 
+	 * @param song	the track to be added
+	 * @return whether the track was added successfully.
+	 */
 	public boolean addTrack(PlaylistItem song){
 		logger.debug("addTrack(song) called");
 		// this is deprecated for the moment because we're not optimzing yet
@@ -46,7 +62,14 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		updater.addSong(song);
 		return true;
 	}
-
+	/**
+	 * Relays the adding of a track to MPDPlaylistRepresentation.
+	 * <p>
+	 * Currently not fully functional, hence the relay to the non-positional version of addTrack.
+	 * @param item	the track to be added
+	 * @param position	where in the list to add the track
+	 * @return whether the track was added successfully.
+	 */
 	public boolean addTrack(PlaylistItem item, int position) {
 		logger.debug("addTrack(song, "+position+") called");
 		// playlist.add(position, item);
@@ -73,6 +96,12 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		return ret;
 	}
 	
+	/**
+	 * Relays the removal of a specific track to MPDPlaylistRepresentation.
+	 * 
+	 * @param song	the track to be removed
+	 * @return whether the song was removed or not (false if not found)
+	 */
 	public boolean removeTrack(PlaylistItem song) {
 		logger.debug("removeTrack(song) called");
 		return playlist.remove(song);
@@ -92,17 +121,23 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	}
 	
 	//for onNewJoin or whatever that method is in the moderator
-	public List<Map<String, Object>> getMap(){ //kinda crappy method name
+	public Map<String, Object> getMap(){ //kinda crappy method name
 		logger.debug("getMap() called");
 		//for every item
 		//get the Map<String, Object> and package them together
-		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
 		for(PlaylistItem item : playlist) {
-			ret.add(item.getMap());
+			set.add(item.getMap());
 		}
+		HashMap<String, Object> ret = new HashMap<String,Object>();
+		ret.put("list", set);
 		return ret;
 	}
     //these need to be mirrored by the Moderator.
+	
+	/**
+	 * Relays the removal of the track at the top of the list to PlaylistModerator.
+	 */
 	@Override
 	public void popCurrentlyPlaying() {
 		logger.debug("popCurrentlyPlaying()");
@@ -111,6 +146,12 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		par.removeTop();
 		//Should pull next from collaboration model
 	}
+	
+	/**
+	 * Verifies that the top song on MPD's playlist and the top song on this playlist match.
+	 * 
+	 * @return whether the currently playing song matches the song on PlaylistStateManager's list
+	 */
 	@Override
 	public boolean verifyCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
 		logger.debug("verifyCurrentlyPlaying() called");
@@ -125,6 +166,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		
 		return ret;
 	}
+	
 	@Override
 	public void forceCurrentlyPlaying(PlaylistItem whatMPDIsCurrentlyPlaying) {
 		logger.debug("forceCurrentlyPlaying() called");
@@ -132,6 +174,11 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		par.addTop(whatMPDIsCurrentlyPlaying);
 	}
 
+	/**
+	 * Called by MPDPlaylistRepresentation to grab the next song when needed (typically when one finishes playing)
+	 * 
+	 * @return the next song on the playlist
+	 */
 	@Override
 	public PlaylistItem getNext() {
 		logger.debug("getNext() called");
