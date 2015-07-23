@@ -1,3 +1,10 @@
+/**
+*
+* CoPlaylist module
+* init when CoPlaylist webapp start
+*
+*/
+
 define(
   [ "angular",
     "library/library",

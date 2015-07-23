@@ -1,7 +1,19 @@
+/**
+*
+* config page.
+*
+*/
 
+/**
+* coweb config
+*/
 var cowebConfig = {
     adminUrl : './admin'
 };
+
+/**
+* requirejs config
+*/
 requirejs.config({	
 	paths: {
         coweb : 'lib/coweb',
@@ -20,6 +32,8 @@ requirejs.config({
     },
     priority: ["angular"],
 });
+
+
 require([
     'coweb/main',
     'jQuery',
@@ -28,6 +42,6 @@ require([
     ], function(coweb,$,angular,app) {
         var $html = angular.element(document.getElementsByTagName('html')[0]);
         angular.element().ready(function() {
-            angular.bootstrap(document, ['coPlaylist']);
+            angular.bootstrap(document, ['coPlaylist']); //init angular modual
         });
     });
