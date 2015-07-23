@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
+import java.util.HashMap;
 
 import org.cometd.bayeux.Message;
 import org.cometd.bayeux.server.ServerSession;
@@ -46,8 +47,8 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	@Override
 	public Map<String,Object> getLateJoinState(){
 		System.out.println("YES THIS WAS CALLED");
-		Map<String, Object> replyParams = null;
-		replyParams = manager.getMap();
+		Map<String, Object> replyParams = new HashMap<String, Object>();
+        replyParams.put("nonsense", manager.getMap());
 		return replyParams;
 	}
 	

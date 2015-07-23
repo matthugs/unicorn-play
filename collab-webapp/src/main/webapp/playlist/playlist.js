@@ -27,8 +27,9 @@ define(
 
 
        var playlist = [];
+
        this.onSetFullState = function(state) {
-         playlist = state;
+         playlist = state.list;
          console.log("state received from server");
          console.log(state);
          $root.$apply();
