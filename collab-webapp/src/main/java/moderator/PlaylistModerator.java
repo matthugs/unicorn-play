@@ -30,6 +30,7 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	boolean isReady = false;
 	
 	public PlaylistModerator(){
+		manager = new PlaylistStateManager(this);
 	}
 	/**
 	 * Callback when the session is created. See coweb documentation for more details.
@@ -40,16 +41,15 @@ public class PlaylistModerator extends DefaultSessionModerator {
 	public void onSessionReady() {
 		this.collab = this.initCollab("playlist");
 		this.isReady = true;
-		manager = new PlaylistStateManager(this);
 	}
 	
-	/*@Override
+	@Override
 	public Map<String,Object> getLateJoinState(){
 		System.out.println("YES THIS WAS CALLED");
 		Map<String, Object> replyParams = null;
 		replyParams = manager.getMap();
 		return replyParams;
-	}*/
+	}
 	
 	/**
 	 * Called whenever a session is over (i.e. all clients have left). See coweb documentation for more details.
