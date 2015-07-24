@@ -13,12 +13,9 @@ define([
 
         var session = coweb.initSession();  //init collab session
 
-        session.onStatusChange = function(stat) {
           console.log(stat); // log the status of collab session
-        };
 
         var argumentations = {key: "the-onlu-session"}; //make sure there is only one session
-        session.prepare(argumentations);
         return coweb.initCollab({id:"nonsense"});
       });
   });

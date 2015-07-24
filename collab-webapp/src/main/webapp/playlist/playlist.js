@@ -7,8 +7,9 @@ define(
 	"jQuery",
 	"angular",
 	"angular-route",
+  "coweb/main",
 	"bootstrap",
-  "collab/collabInterfaceService",
+  "collab/collabInterfaceService"],
   ],
   function($,angular,ngRoute) {
     //playlist module
@@ -30,6 +31,26 @@ define(
 
        var playlist = [];
 
+       this.onSetFullState = function(state) {
+         playlist = state.list;
+         console.log("state received from server");
+         console.log(state);
+         $root.$apply();
+       }
+
+
+       var session = coweb.initSession();
+       session.onStatusChange = function(stat) {
+         console.log(stat);
+       };
+       var argumentations = {key: "the-onlu-session"};
+
+       collab.subscribeStateResponse(this, "onSetFullState");
+
+       session.prepare(argumentations);
+
+
+
        this.getPlaylist = function() {
         return playlist;
       };
@@ -45,11 +66,9 @@ define(
         console.log(args.value);
         if (args.value != null) {
           this.updatePlaylistAdd(args.value);
-
           console.log("update playlist playlist page");
           $root.$apply();
         };
-
       });
 
       this.add = function(song) {
@@ -60,7 +79,7 @@ define(
         console.log("added at " + (playlist.length - 1));
 
       }
-    }]);
+      }]);
 
     //ngController init
     app.controller("playlistCtr", [
