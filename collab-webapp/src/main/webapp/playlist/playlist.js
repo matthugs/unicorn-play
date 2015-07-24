@@ -9,9 +9,9 @@ define(
 	"angular-route",
   "coweb/main",
 	"bootstrap",
-  "collab/collabInterfaceService"],
+  "collab/collabInterfaceService"
   ],
-  function($,angular,ngRoute) {
+  function($,angular,ngRoute, coweb) {
     //playlist module
     var app = angular.module("coPlaylist.playlist",
      ["coPlaylist.collabInterface"]);
@@ -32,18 +32,19 @@ define(
        var playlist = [];
 
        this.onSetFullState = function(state) {
-         playlist = state.list;
-         console.log("state received from server");
-         console.log(state);
-         $root.$apply();
-       }
-
-
-       var session = coweb.initSession();
-       session.onStatusChange = function(stat) {
-         console.log(stat);
+          $root.$apply(function() {
+            playlist = state.list;
+            console.log("state received from server");
+            console.log(state);
+          });
        };
-       var argumentations = {key: "the-onlu-session"};
+
+
+       var session = coweb.initSession();  //init collab session
+       session.onStatusChange = function(stat) {
+         console.log(stat); // log the status of collab session
+       };
+       var argumentations = {key: "the-onlu-session"}; //ensures there is only one session
 
        collab.subscribeStateResponse(this, "onSetFullState");
 
@@ -58,16 +59,17 @@ define(
       this.updatePlaylistAdd = function (song) {
         playlist.push(song);
         console.log(playlist);
-      }
+      };
 
       //subscrib to remote changes
       collab.subscribeSync("listChange", this, function(args){
         console.log("detect remote add song!");
         console.log(args.value);
         if (args.value != null) {
-          this.updatePlaylistAdd(args.value);
-          console.log("update playlist playlist page");
-          $root.$apply();
+          $root.$apply(function() {
+            this.updatePlaylistAdd(args.value);
+            console.log("update playlist playlist page");
+          });
         };
       });
 
@@ -85,24 +87,21 @@ define(
     app.controller("playlistCtr", [
       "collabInterface",
       "$scope",
-      "$http",
       "playlistService",
-      function(collab, $scope, $http, playlistService) {
+      function(collab, $scope, playlistService) {
         console.log("find playlist");
         $scope.playlist = playlistService.getPlaylist();
 
         //watch change of playlist
-        $scope.$watchCollection( "playlist",
+        $scope.$watchCollection( playlistService.getPlaylist,
           function(newValue, oldValue){
             console.log("locally detect change");
             if (typeof newValue !== 'undefined') {
               $scope.playlist = newValue;
               console.log('updating playlist');
               console.log(playlistService.getPlaylist());
-
             }
-          }
-          );
+          });
 
 
       }]);
