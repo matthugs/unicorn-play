@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This class is server version of MPDArtist.
  * @author emily
  *
  */
@@ -14,7 +15,7 @@ public class ArtistItem extends JSONWrapper {
 	boolean valid;
 	
 	/**
-	 * @param map
+	 * @param map Constructs the wrapper from a JSON map
 	 */
 	public ArtistItem(Map<String, Object> map) {
 		super(map);
@@ -28,7 +29,7 @@ public class ArtistItem extends JSONWrapper {
 	}
 	
 	/**
-	 * @param artist
+	 * @param artist Constructs the wrapper from the artist name
 	 */
 	public ArtistItem(String artist) {
 		super(new HashMap<String, Object>());
