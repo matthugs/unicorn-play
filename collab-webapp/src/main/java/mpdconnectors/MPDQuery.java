@@ -18,6 +18,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides the querying functionality for the bot
+ * @author emily
+ *
+ */
 public class MPDQuery implements IQuery{
 	private static final Logger logger = LogManager.getLogger();
 	
@@ -25,13 +30,19 @@ public class MPDQuery implements IQuery{
 
 	private Database database;
 
+	/**
+	 * Constructs the MPDQuery object by getting the global instance of the MPD database.
+	 */
 	public MPDQuery() {
-		//this is just a stub to satisfy the compiler temporarily
 		database = MPDWrapper.getMPD().getDatabase();
 	}
 
 	//refactored so that hashtable construction happens all in the SongConverter
 
+	/**
+	 * @param criteria
+	 * @return a list of songs found searching by the criteria
+	 */
 	public Map<String, Object> searchAny(String criteria){
 		Map<String, Object> ret = null;
 		try{
@@ -43,6 +54,11 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
+	
+	/**
+	 * @param artist
+	 * @return a list of songs found searching by the artist
+	 */
 	public Map<String, Object> searchArtist(String artist){
 		Map<String, Object> ret = null;
 		try{
@@ -54,6 +70,11 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
+	
+	/**
+	 * @param genre
+	 * @return a list of songs found searching by the genre
+	 */
 	public Map<String, Object> searchGenre(String genre){
 		Map<String, Object> ret = null;
 		try{
@@ -65,6 +86,11 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
+	
+	/**
+	 * @param album
+	 * @return a list of songs found searching by the album
+	 */
 	public Map<String, Object> searchAlbum(String album){
 		Map<String, Object> ret = null;
 		try{
@@ -76,6 +102,11 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
+	
+	/**
+	 * @param song
+	 * @return a list of songs found searching by the song title
+	 */
 	public Map<String, Object> searchSong(String song){
 		Map<String, Object> ret = null;
 		try{
@@ -87,6 +118,10 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 	
+	
+	/**
+	 * @return a list of all possible PlaylistItems in the library
+	 */
 	public Map<String, Object> listAll() {
 		Map<String, Object> map = null;
 		try{
@@ -98,11 +133,21 @@ public class MPDQuery implements IQuery{
 		return map;
 	}
 
+	/**
+	 * Returns a song associated with the hash.
+	 * @param hash
+	 * @return
+	 */
 	public PlaylistItem getSong(String hash) {
 		return converter.hashToPlaylistItem(hash);
 	}
 
 	@Override
+	/**
+	 * This method takes in a string search criteria and returns a list of Artists
+	 * @param artist
+	 * @return a list of ArtistItems
+	 */
 	public Map<String, Object> searchforArtists(String artist) {
 		System.out.println("searchForArtists("+artist+") called");
 		Map<String, Object> ret = null;
@@ -135,6 +180,12 @@ public class MPDQuery implements IQuery{
 
 
 	@Override
+	/**
+	 * This method takes in a string search criteria and returns a list of AlbumItems
+	 * as opposed to the methods above which return Songs 
+	 * @param artist
+	 * @return a lit of AlbumItems
+	 */
 	public Map<String, Object> listAllAlbumsByArtist(String artist) {
 		System.out.println("listAllAlbumsByArtist("+artist+") called");
 		Collection<AlbumItem> albumItemList = new ArrayList<AlbumItem>();
@@ -164,6 +215,12 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
+	
+	/**
+	 * Converts a collection of album items to one big Map<String, Object>
+	 * @param albumItemList
+	 * @return
+	 */
 	private Map<String, Object> albumItemsToMap(Collection<AlbumItem> albumItemList) {
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
 		
@@ -176,7 +233,11 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 	
-	
+	/**
+	 * Converts a list of MPDSongs to one big Map<String, Object>
+	 * @param songList
+	 * @return
+	 */
 	private Map<String, Object> songListToMap(Collection<MPDSong> songList) {
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();//list of playlist objects (maps)
 	
@@ -190,8 +251,12 @@ public class MPDQuery implements IQuery{
 		return ret;
 	}
 
-	private Map<String, Object> artistsToMap(
-		Collection<MPDArtist> listAllArtists) {
+	/**
+	 * Converts a list of MPDArtists to one big Map<String, Object>
+	 * @param listAllArtists
+	 * @return
+	 */
+	private Map<String, Object> artistsToMap(Collection<MPDArtist> listAllArtists) {
 		Collection<String> artistToString = new ArrayList<String>();
 		
 		for(MPDArtist artist : listAllArtists) {
@@ -201,6 +266,11 @@ public class MPDQuery implements IQuery{
 		return artistStringsToMap(artistToString);
 	}
 
+	/**
+	 * Converts a collection of Strings representing artist names to one big Map<String, Object>
+	 * @param artistList
+	 * @return
+	 */
 	private Map<String, Object> artistStringsToMap(Collection<String> artistList) {
 		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
 		

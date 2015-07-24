@@ -43,7 +43,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	 * Relays the adding of a track to MPDPlaylistRepresentation.
 	 * 
 	 * @param song	the track to be added
-	 * @return whether the track was added successfully.
+	 * @return true if successful, false else
 	 */
 	public boolean addTrack(PlaylistItem song){
 		logger.debug("addTrack(song) called");
@@ -68,7 +68,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	 * Currently not fully functional, hence the relay to the non-positional version of addTrack.
 	 * @param item	the track to be added
 	 * @param position	where in the list to add the track
-	 * @return whether the track was added successfully.
+	 * @return true if successful, false else
 	 */
 	public boolean addTrack(PlaylistItem item, int position) {
 		logger.debug("addTrack(song, "+position+") called");
@@ -100,7 +100,7 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 	 * Relays the removal of a specific track to MPDPlaylistRepresentation.
 	 * 
 	 * @param song	the track to be removed
-	 * @return whether the song was removed or not (false if not found)
+	 * @return true if successful, false else
 	 */
 	public boolean removeTrack(PlaylistItem song) {
 		logger.debug("removeTrack(song) called");
@@ -185,35 +185,4 @@ public class PlaylistStateManager implements IPlaylistUpdate{
 		logger.debug("getNext() called");
 		return playlist.get(1);
 	}
-
-	// //If the song is not in the list, it just adds the song. Otherwise, it promotes it the specified number of positions.
-	// public boolean promoteTrack(PlaylistItem song, int positions){
-	// 	return true;
-	// }
-
-	// public boolean pushToTop(PlaylistItem item) {
-	// 	return true;
-	// }
-
-	// protected boolean pushNextToMPD(){
-	// 	return true;
-	// }
-
-	// protected boolean updateTheMPDPlaylist(){
-	// 	return true;
-	// }
-
-	// public boolean updateCurrentlyPlaying(PlaylistItem song){
-	// 	try{
-	// 		//FIXME to use a playlistItem and not a song
-	// 		//playlist.set(0, song);
-	// 	}
-	// 	catch (Exception e) {
-	// 		e.printStackTrace();
-	// 	}
-
-	// 	return true;
-	// }
-
-
 }

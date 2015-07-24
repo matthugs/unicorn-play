@@ -3,7 +3,7 @@ package moderator;
 import objects.PlaylistItem;
 
 /**
- * This interface is intended to sit between the moderator package and the mpdconnector package.
+ * This interface is intended to sit between the moderator package and the mpdconnectors package.
  * This is NOT intended for use by the PlaylistModerator to make edits.
  * @author emily
  *
