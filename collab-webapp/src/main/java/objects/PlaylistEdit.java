@@ -5,6 +5,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
+/**
+ * The PlaylistEdit is wrapper type for commands sent from opencoweb.
+ * @author William
+ *
+ */
 public class PlaylistEdit extends JSONWrapper {
 	private static final Logger logger = LogManager.getLogger();
 	
@@ -19,6 +24,10 @@ public class PlaylistEdit extends JSONWrapper {
 	private Integer position;
 	
 	
+	/**
+	 * Constructs a PlaylistEdit based on the given map. This is intended to take in JSON from opencoweb
+	 * @param map
+	 */
 	public PlaylistEdit(Map<String, Object> map) {
 		super(map);
 		valid = true;
@@ -66,28 +75,51 @@ public class PlaylistEdit extends JSONWrapper {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see objects.JSONWrapper#isValid()
+	 */
 	public boolean isValid(){
 		return valid;
 	}
 
+	/* (non-Javadoc)
+	 * @see objects.JSONWrapper#getMap()
+	 */
 	@Override
 	Map<String, Object> getMap() {
 		return map;
 	}
+	/**
+	 * @return
+	 */
 	public String getTopic() {
 		return topic;
 	}
+	/**
+	 * @return 
+	 */
 	public String getType() {
 		return type;
 	}
+	/**
+	 * @return
+	 */
 	public PlaylistItem getValue(){
 		return value;
 	}
+	
+	/**
+	 * @return
+	 */
 	public int getSite() {
 		return site;
 		//I'd make a check for the change from Integer to int given the possibility of null
 		//But honestly, you shouldn't use this if you haven't checked isValid first.
 	}
+	
+	/**
+	 * @return
+	 */
 	public int getPosition() {
 		return position;
 	}
