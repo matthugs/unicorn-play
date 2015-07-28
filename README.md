@@ -15,6 +15,22 @@ Bare-bones configuration files for MPD are included in this repository. It is
 recommended that you install a simple MPD client (such as `mpc`) to test
 whether MPD’s audio output is working before installing the system.
 
+## MPD Setup
+
+The provided mpd configuration files assume several files exist and are
+available for mpd to write. For example, for on linux, the directory
+`~/.config/mpd/playlists/` must exist. On the same platform the following will
+create the requisite files:
+```sh
+mkdir -p ~/.config/mpd/playlists
+touch ~/.config/mpd/database ~/.config/mpd/pid ~/.config/mpd/log
+```
+
+With these files in place you should be able to start the daemon using
+```sh
+mpd lin-mpd.conf
+```
+
 ## Installation
 
 Using `git` from the command line:
