@@ -12,6 +12,17 @@ import org.bff.javampd.objects.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Communicates between the ever-changing playlist facing the frontend and the actual playlist running in the MPD process.
+ * 
+ * This class was designed to only hold two songs at a time: the currently playing song, and the next song. The PlaylistStateManager 
+ * could be receiving 10's or 100's of requests that change the order of the list, but MPD does not need to be notified of any changes except those which are imminent.
+ * 
+ * For the Minimally Viable Product, songs are simply added to the back of the MPD Playlist.
+ * 
+ * @author emily
+ *
+ */
 public class MPDPlaylistRepresentation{
 	private static final Logger logger = LogManager.getLogger();
 	
@@ -24,6 +35,11 @@ public class MPDPlaylistRepresentation{
 	IPlaylistUpdate playlistStateManager;
 	Timer timer;
 
+	/**
+	 * Constructs the MPDPlaylistRepresentation object by taking in an instance of the PlaylistStateManager.
+	 * Will update database upon construction.
+	 * @param playlistStateManager
+	 */
 	public MPDPlaylistRepresentation(PlaylistStateManager playlistStateManager) {
 		logger.debug("MPDPlaylistRepresentation INSTANTIATED");
 		this.playlistStateManager = playlistStateManager;
@@ -42,6 +58,9 @@ public class MPDPlaylistRepresentation{
 		//don't play yet!
 	}
 
+	/**
+	 * @param item the PlaylistItem that is to be next on the list.
+	 */
 	public void addSong(PlaylistItem item) {
 		logger.debug("addSong(PlaylistItem) called");
 		try{
@@ -53,6 +72,9 @@ public class MPDPlaylistRepresentation{
 		}
 	}
 
+	/**
+	 * @param song The mPDSong that is to be next on the list.
+	 */
 	public void addSong(MPDSong song) {
 		try{
 		logger.debug("addSong(MPDSong) called");
@@ -64,12 +86,23 @@ public class MPDPlaylistRepresentation{
 		}
 	}
 	
+	/**
+	 * @param item the PlaylistItem that should be currently playing.
+	 * @return true if successful, false otherwise
+	 */
 	public boolean setCurrent(PlaylistItem item){
 		logger.debug("setCurrent(PlaylistItem"+ item.getSong() +")");
 		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
 		return setCurrent(song);
 	}
-
+	
+	/**
+	 * @param song The MPDSong that should be currently playing
+	 * @return true if successful, false otherwise.
+	 *//**
+	 * @author emily
+	 *
+	 */
 	public boolean setCurrent(MPDSong song) {
 		logger.debug("setCurrent(MPDSong"+ song.getName() +")");
 		boolean ret = true;
@@ -109,12 +142,20 @@ public class MPDPlaylistRepresentation{
 		return ret;
 	}
 
+	/**
+	 * @param item the PlaylistItem that is to be played next
+	 * @return
+	 */
 	public boolean setNext(PlaylistItem item) {
 		logger.debug("setNext(PlaylistItem"+ item.getSong() +")");
 		MPDSong song = SongConverter.getConverter().playlistItemToMPDSong(item);
 		return setNext(song);
 	}
 	
+	/**
+	 * @param song the MPDSong object that is to be played next.
+	 * @return
+	 */
 	public boolean setNext(MPDSong song){
 		logger.debug("setNext(MPDSong"+ song.getName() +")");
 		next = song;
@@ -134,6 +175,12 @@ public class MPDPlaylistRepresentation{
 
 	////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * This class was designed with the intention that it would intelligently poll MPD to see when the changeover 
+	 * from the current song to the next song happened, and relay that change back to the frontend.
+	 * @author emily
+	 *
+	 */
 	class ChangePoller extends TimerTask {
 		long lastTime = 0;
 		long thisTime = 0;
@@ -166,6 +213,10 @@ public class MPDPlaylistRepresentation{
 		}
 	}
 	
+	/**
+	 * Cancels the current polling tasks and schedules a new one.
+	 * @param milliseconds
+	 */
 	private void timerUpdate(int milliseconds) {
 		timer.cancel();
 		//timer.purge();

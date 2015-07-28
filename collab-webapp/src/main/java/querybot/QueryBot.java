@@ -9,41 +9,60 @@ import org.coweb.bots.Proxy; //Used to send messages back to the session - don't
 
 import java.util.Map;
 import java.io.*;
-
+/**
+ * Fields asychronous requests for data by clients for information on available songs.
+ * 
+ * @author William Baldwin
+ * @version 1.0
+ *
+ */
 public class QueryBot extends VanillaBot {
 	private static final Logger logger = LogManager.getLogger();
 	
 	private Proxy proxy = null;
 	IQuery query = null;
 	
-	/*
-	 * They say this is necessary for all bots
-	 * but besides 'in the interface' not much communication is needed here.
+	/**
+	 * Sets the proxy object this bot should use to reply to subscribes, sync, requests, etc.
+	 * 
+	 * @param proxy	the proxy to be used.
 	 */
 	public void setProxy(Proxy proxy) {
 		this.proxy = proxy;
 	}
 	
+	/**
+	 * Called when the bot service is to shutdown. Allows the bot to do any cleanup that it needs to.
+	 */
     @Override
 	public void onShutdown() {
     	query = null;
 	}
 
+    /**
+     * The bot Proxy will call this method when a new session has been created and a user has subscribed to this bot's service.
+     */
     @Override
 	public synchronized void init() {
     	System.out.println("Initialized (Not necessarily properly)!");
     	query = new MPDQuery();
 	}
 	
-	/*
-	 * The request here is for a song to play.
-	 * For purposes of this, a lot of these parameters aren't relevant.
-	 */
+    /**
+     * Called when a user makes a private request to this bot.
+     * <p>
+     * In our case, this takes in the form of request and relays to MPDQuery to acquire the song info it will send back to the user.
+     * 
+     * @param params	key value pairs of parameters sent by the user; gives the type of query.
+     * @param replyToken	token associated with this request. The bot must pass this token back to the proxy when replying to this request.
+     * @param username	The username of the client making this request. (irrelevant for our purposes)
+     */
 	public synchronized void onRequest(Map<String, Object> params, String replyToken, String username) {
 		//parse the request
-		String filterBy = (String)params.get("filter-by");//what they're narrowing the search down by
-		String searchTerm = (String)params.get("filter-value");//the text being searched for
-		String returnType = (String)params.get("listing-type");//the return type
+		Map<String, Object> parameters = (Map<String, Object>)params.get("query");
+		String filterBy = (String)parameters.get("filter-by");//what they're narrowing the search down by
+		String searchTerm = (String)parameters.get("filter-value");//the text being searched for
+		String returnType = (String)parameters.get("listing-type");//the return type
 		Map<String, Object> replyParams = null;
 
 		if(returnType != null){
@@ -53,7 +72,7 @@ public class QueryBot extends VanillaBot {
 
 			else if(returnType.equals("Album")){
 				
-				if(filterBy.equals("Artist")) {
+				if(filterBy != null && filterBy.equals("Artist")) {
 					replyParams = query.listAllAlbumsByArtist(searchTerm);
 				}
 				else{

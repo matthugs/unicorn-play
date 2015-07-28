@@ -1,7 +1,13 @@
- <div class="lib">
+<!--Artist page with a table of artist info  #/libByArtist-->
+
+<div class="lib">
+
+  <!--search box to filter the list of artist-->
   <div class = "searchBoxContainer">
     <input type="text" class = "searchBox" ng-model="search"/>
   </div>
+
+  <!--table of artist info-->
   <table class="libList">
     <tr>
       <th >Singer</th>
@@ -10,4 +16,5 @@
       <td>{{song.singer}}  <button class="addButton" ng-click="goToAlbums(song.singer)"> <a href="#/libByAlbum">choose</button> </td>
     </tr>
   </table>
+
 </div>

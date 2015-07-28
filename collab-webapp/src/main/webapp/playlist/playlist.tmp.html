@@ -1,14 +1,15 @@
-<!--by song #/playlist-->
- <div id="playlist">
-    <table id="libList">
-      <tr>
-        <th >Song</th>
-        <th >Singer</th>
-      </tr>
-      <tr ng-repeat="song in playlist">
-        <td class="songInLib">{{song.song}}</td>
-        <td>{{song.singer}}</td>
-      </tr>
-    </table>
-  </div>
+<!--playlist page display the playlist #/playlist-->
+
+<div id="playlist">
+  <table id="libList">
+    <tr>
+      <th >Song</th>
+      <th >Singer</th>
+    </tr>
+    <tr ng-repeat="song in playlist">
+      <td class="songInLib">{{song.song}}</td>
+      <td>{{song.singer}}</td>
+    </tr>
+  </table>
+</div>
 

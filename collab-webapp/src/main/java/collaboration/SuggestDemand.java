@@ -7,6 +7,11 @@ import java.util.Queue;
 import objects.PlaylistItem;
 import mpdconnectors.SongConverter;
 
+/**
+ * Suggest and Demand collaboration was deemed to not be a priority for the MVP. This class is unfinished.
+ * @author emily
+ *
+ */
 public class SuggestDemand implements ICollabToPlaylist {
 	Queue<PlaylistItem> demandQueue;
 	ArrayList<PlaylistItem> suggestionBox; // Is an arraylist really the best structure to use here?

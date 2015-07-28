@@ -1,3 +1,8 @@
+/**
+*
+* CSS for all web pages
+*
+*/
 
 html, body {
     margin: 0px;
@@ -11,14 +16,12 @@ a {
     text-decoration: none;
 }
 
-
 .searchBoxContainer {
     display: block;
     height:5%;
     width: 100%;
     padding:5%;
 }
-
 
 .searchBox{
     display: block;
@@ -30,9 +33,7 @@ a {
     font-size: 1em;
 }
 
-
 .navButton {
-
     background: none;
     border: none;
     margin:5px;
@@ -78,21 +79,19 @@ a {
 }
 
 table{
-border-collapse: collapse;
+    border-collapse: collapse;
     border-style: hidden;
     width:80%;
     margin: auto;
 }
 
 table td, table th{
-border:1px solid black;
-margin:auto;
-text-align: center;
-vertical-align: center;
-padding: 5px;
+    border:1px solid black;
+    margin:auto;
+    text-align: center;
+    vertical-align: center;
+    padding: 5px;
 }
-
-
 
 #songInLib{
 
@@ -110,12 +109,11 @@ padding: 5px;
 }
 
 #lib{
-display: block;
-width: 100%;
+    display: block;
+    width: 100%;
     height: 100%;
 
 }
-
 
 .buttonList {
     list-style-type: none;
@@ -141,6 +139,7 @@ header {
 img {
     border:none;
 }
+
 #switchPage {
     background: url("plusSign.png");
     background-size: cover;

@@ -3,6 +3,11 @@ package objects;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is server version of MPDAlbum.
+ * @author emily
+ *
+ */
 public class AlbumItem extends JSONWrapper {
 
 	String artist;
@@ -10,6 +15,10 @@ public class AlbumItem extends JSONWrapper {
 		
 	boolean valid;
 	
+	/**
+	 * Constructs an album item from a JSON message
+	 * @param map
+	 */
 	public AlbumItem(Map<String, Object> map) {
 		super(map);
 		valid = true;
@@ -23,6 +32,11 @@ public class AlbumItem extends JSONWrapper {
 		}
 	}
 	
+	/**
+	 * Constructs an album item from the artist name and album name
+	 * @param artist
+	 * @param album
+	 */
 	public AlbumItem(String artist, String album) {
 		super(new HashMap<String, Object>());
 		valid = true;
@@ -32,11 +46,17 @@ public class AlbumItem extends JSONWrapper {
 		map.put("album", album);
 	}
 	
+	/* (non-Javadoc)
+	 * @see objects.JSONWrapper#isValid()
+	 */
 	@Override
 	public boolean isValid() {
 		return valid;
 	}
 
+	/* (non-Javadoc)
+	 * @see objects.JSONWrapper#getMap()
+	 */
 	@Override
 	public	Map<String, Object> getMap() {
 		return map;

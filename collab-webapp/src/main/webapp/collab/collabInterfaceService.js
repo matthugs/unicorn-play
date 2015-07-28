@@ -1,17 +1,15 @@
+/**
+*
+* Service of collab Interface
+* Init when start the CoPlaylist webapp
+*
+*/
 define([
-    "angular",
-    "coweb/main"],
-    function(ng, coweb) {
-      var app = ng.module("coPlaylist.collabInterface", []);
-      app.factory("collabInterface", function() {
-
-        var session = coweb.initSession();
-        session.onStatusChange = function(stat) {
-          console.log(stat);
-        };
-        var argumentations = {key: "the-onlu-session"};
-        session.prepare(argumentations);
+  "angular",
+  "coweb/main"],
+  function(ng, coweb) {
+    var app = ng.module("coPlaylist.collabInterface", []);
+    app.factory("collabInterface", function() {
         return coweb.initCollab({id:"nonsense"});
       });
-      //app.service(
-    });
+  });
